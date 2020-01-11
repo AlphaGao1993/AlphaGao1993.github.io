@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>网易2017校招笔试算法题(一) | Here&#39;s to Change</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="题目一：数字翻转 对于一个整数x，定义操作Rev(x) 为将x按数位翻转过来，并且去除掉前导0。例如：如果x&#x3D;123，则Rev(x)&#x3D;321;如果x&#x3D;100，则Rev(x)&#x3D;1;现在给出整数x和整数y，要求Rev(Rev(x)+Rev(y))为多少？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网易2017校招笔试算法题(一)">
+<meta property="og:url" content="alphagao.com/2016/09/13/netease-campus-2017-algorithm-1/index.html">
+<meta property="og:site_name" content="Here&#39;s to Change">
+<meta property="og:description" content="题目一：数字翻转 对于一个整数x，定义操作Rev(x) 为将x按数位翻转过来，并且去除掉前导0。例如：如果x&#x3D;123，则Rev(x)&#x3D;321;如果x&#x3D;100，则Rev(x)&#x3D;1;现在给出整数x和整数y，要求Rev(Rev(x)+Rev(y))为多少？">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-09-13T09:49:24.000Z">
+<meta property="article:modified_time" content="2020-01-11T07:12:36.802Z">
+<meta property="article:author" content="AlphaGao">
+<meta property="article:tag" content="AC">
+<meta property="article:tag" content="Netease">
+<meta property="article:tag" content="Campus">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Here&#39;s to Change" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Here&#39;s to Change</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">请问你真的有在努力吗 ？</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="alphagao.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-netease-campus-2017-algorithm-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/13/netease-campus-2017-algorithm-1/" class="article-date">
+  <time datetime="2016-09-13T09:49:24.000Z" itemprop="datePublished">2016-09-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      网易2017校招笔试算法题(一)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="题目一：数字翻转"><a href="#题目一：数字翻转" class="headerlink" title="题目一：数字翻转"></a>题目一：数字翻转</h3><blockquote>
+<p>对于一个整数x，定义操作Rev(x) 为将x按数位翻转过来，并且去除掉前导0。例如：<br>如果x=123，则Rev(x)=321;<br>如果x=100，则Rev(x)=1;<br>现在给出整数x和整数y，要求Rev(Rev(x)+Rev(y))为多少？</p>
+</blockquote>
+<a id="more"></a>
+<h4 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h4><blockquote>
+<p>输入为一行,x、y(1&lt;=x、y&lt;=1000),以空格隔开。</p>
+</blockquote>
+<h4 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h4><blockquote>
+<p>输出rev(rev(x) + rev(y))的值.</p>
+</blockquote>
+<h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><p>本题思路较为简单，题目中已经给出了提示，就是实现Rev方法，只要实现Rev方法剩下的就没什么难度了。将一个整型数字按位翻转可以通过算数计算来实现，也可以通过编程语言的api来实现，因为我还没接触过Java的翻转字符串Api，所以就采用算数计算来实现了。<br>设原数为x，反数为y；<br>则y的初值为0；<br>将原数的个位数字得出乘以10，再加上下一个原数的个位数字，每次求个位数字后，原数除以10；<br>即：y=y*10+x%10;x/=10;</p>
+<h4 id="Java实现（已AC）"><a href="#Java实现（已AC）" class="headerlink" title="Java实现（已AC）"></a>Java实现（已AC）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">reverse</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> m = in.nextInt();</span><br><span class="line">        <span class="keyword">int</span> n = in.nextInt();</span><br><span class="line">        System.out.println(Rev(Rev(m)+Rev(n)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将一个整数按位翻转并去除前导0</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> x 待翻转的整数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 翻转后的整数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Rev</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> r = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (x &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            r = r * <span class="number">10</span> + x % <span class="number">10</span>;</span><br><span class="line">            x /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="题目二：暗黑字符串"><a href="#题目二：暗黑字符串" class="headerlink" title="题目二：暗黑字符串"></a>题目二：暗黑字符串</h3><blockquote>
+<p>一个只包含‘A’、‘B’和‘C’的字符串，如果存在某一段长度为3的连续子串恰好‘A’、‘B’和‘C’各有一个，那么这个字符串就是纯净的，否则这个字符串就是黑暗的。例如：<br>BAACAACCBAAA 连续子串“CBA”中包含了‘A’、‘B’和‘C’各一个，所以是纯净的字符串；<br>AABBCCAABB 不存在一个长度为3的连续的子串包含‘A’、‘B’、‘C’各一各，所以是暗黑的字符串；<br>你的任务就是计算出长度为n的字符串（只包含‘A’、‘B’和‘C’），有多少个是暗黑的字符串。</p>
+</blockquote>
+<h4 id="输入描述-1"><a href="#输入描述-1" class="headerlink" title="输入描述"></a>输入描述</h4><blockquote>
+<p>输入一个整数n，表示字符串长度（1&lt;=n&lt;=30）.</p>
+</blockquote>
+<h4 id="输出描述-1"><a href="#输出描述-1" class="headerlink" title="输出描述"></a>输出描述</h4><blockquote>
+<p>输出一个整数表示有多少个暗黑字符串。</p>
+</blockquote>
+<h4 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h4><p>一开始看到这个题的时候我是打算用排序的思路做的，到后来发现其实行不通，反而越来越复杂。于是就重新思考了。当然这个题在当时笔试的时候我并没有做出来。</p>
+<p>参考了<a href="http://www.itdadao.com/articles/c15a387781p0.html" target="_blank" rel="noopener">http://www.itdadao.com/articles/c15a387781p0.html</a> 的思路，我终于恍然大悟。<br>以下是我自己的理解：</p>
+<p>由于题目要求是长度为3的子串，所以当前两个字符确定的时候，第三个字符的写法个数也就能确定了。例如如果前两个字符是AB的时候，第三个字符就只能是A或者B，这样才能是暗黑字符串。<br>如果前两个字符是AA的时候，第三个字符就可以是A、B、C任意一个字符；<br>这样，就可以把暗黑字符串的情况分为这两种，通过这两种类型的暗黑字符串就可以构建 n+1 长度的暗黑字符串：<br>若某一字符串的最后两个字符不相同，即AB型的时候，只要在最后添加A或者B就是新的暗黑字符串，每一个长度为n的暗黑字符串可以构建出2个n+1长度的暗黑字符串（AB型）；<br>若某一字符串的最后两个字符相同，即AA型的时候，最后一个字符就可以是A、B、C任意一个字符；即每一个长度为n的暗黑字符串可以构建出3个n+1长度的暗黑字符串（AA型）；</p>
+<p>为了便于后面的计算，需要将新构建出的暗黑字符串进行分类：<br>1个AB型可以构建1个AB型暗黑字符串和1个AA型暗黑字符串；<br>1个AA型可以构建1个AA型暗黑字符串和2个AB型暗黑字符串；</p>
+<p>长度为n的字符串的两种暗黑字符串个数相加就是n+1长度字符串的暗黑字符串个数。</p>
+<p>由以上分析得：<br>设长度为n（n&gt;=2）的字符串的AB型暗黑字符串个数为x1，AA型暗黑字符串个数为y1;<br>设长度为n+1的字符串的AB型暗黑字符串个数为x2,AA型暗黑字符串个数为y2;<br>则长度为n+1的字符串的AB型暗黑字符串个数为：x2=x1+2*y1;<br>长度为n+1的字符串的AA型暗黑字符串个数为：y2=x1+y1;<br>其中当n=2的时候，x1=6;y1=3;<br>另外当n=1的时候，暗黑字符串的总个数为３；</p>
+<h4 id="Java实现（已AC）-1"><a href="#Java实现（已AC）-1" class="headerlink" title="Java实现（已AC）"></a>Java实现（已AC）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">dark</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> m = in.nextInt();</span><br><span class="line">        System.out.println(cal(m));</span><br><span class="line">        in.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 计算长度为n的字符串的暗黑字符串个数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> n 字符串长度</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 暗黑字符串个数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">cal</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n &lt; <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">long</span> x1 = <span class="number">6</span>;<span class="comment">//初始AB型暗黑字符串个数</span></span><br><span class="line">        <span class="keyword">long</span> y1 = <span class="number">3</span>;<span class="comment">//初始AA型暗黑字符串个数</span></span><br><span class="line">        n = n - <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (n-- &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">long</span> x2 = x1 + <span class="number">2</span> * y1;<span class="comment">//n+1长度字符串的AB型暗黑字符串个数</span></span><br><span class="line">            <span class="keyword">long</span> y2 = x1 + y1;    <span class="comment">//n+1长度字符串的AA型暗黑字符串个数</span></span><br><span class="line">            x1 = x2; <span class="comment">//恢复x1,x2的值</span></span><br><span class="line">            y1 = y2;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> x1 + y1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="题目三：回文序列"><a href="#题目三：回文序列" class="headerlink" title="题目三：回文序列"></a>题目三：回文序列</h3><blockquote>
+<p>如果一个数字序列逆置之后跟原序列是一样的就称这样的数字序列为回文序列。例如：<br>{1, 2, 1}, {15, 78, 78, 15} , {112} 是回文序列,<br>{1, 2, 2}, {15, 78, 87, 51} ,{112, 2, 11} 不是回文序列。<br>现在给出一个数字序列，允许使用一种转换操作：<br>选择任意两个相邻的数，然后从序列移除这两个数，并用这两个数字的和插入到这两个数之前的位置(只插入一个和)。<br>现在对于所给序列要求出最少需要多少次操作可以将其变成回文序列。</p>
+</blockquote>
+<h4 id="输入描述-2"><a href="#输入描述-2" class="headerlink" title="输入描述"></a>输入描述</h4><blockquote>
+<p>输入为两行，第一行为序列长度n ( 1 ≤ n ≤ 50),<br>第二行为序列中的n个整数item[i] (1 ≤ iteam[i] ≤ 1000)，以空格分隔。</p>
+</blockquote>
+<h4 id="输出描述-2"><a href="#输出描述-2" class="headerlink" title="输出描述"></a>输出描述</h4><blockquote>
+<p>输出一个数，表示最少需要的转换次数</p>
+</blockquote>
+<h4 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h4><p>有两个指针，一个指向序列的开始位置，一个指向序列的末尾位置；<br>前后比较两个指针指向位置的数字：<br>若头小于尾，则把头指向的数字加到头后面的位置，同时头指针指向被加的数字，也就是头指针后移一位；此时记一次变换；<br>若头大于尾，则把尾指向的数字加到尾前面的位置，同时尾指针指向被加的数字，也就是尾指针前移一位；此时记一次变换；<br>若头尾指针指向的数字相等，则头指针后移一位，尾指针前移一位，继续比较，不计变换次数；<br>如此，直到头指针指向的位置不小于尾指针指向的位置，停止比较；<br>此时就可得出变换的次数；</p>
+<h4 id="Java实现（已AC）-2"><a href="#Java实现（已AC）-2" class="headerlink" title="Java实现（已AC）"></a>Java实现（已AC）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">palindrome</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> m = in.nextInt();</span><br><span class="line">        <span class="keyword">int</span>[] q = <span class="keyword">new</span> <span class="keyword">int</span>[m];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            q[i] = in.nextInt();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(changeTime(q));</span><br><span class="line">        in.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 计算成为回文序列需要变换的最少次数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> q 原始序列</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 变换次数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">changeTime</span><span class="params">(<span class="keyword">int</span>[] q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> times=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> start=<span class="number">0</span>;<span class="comment">//头指针</span></span><br><span class="line">        <span class="keyword">int</span> end = q.length - <span class="number">1</span>;<span class="comment">//尾指针</span></span><br><span class="line">        <span class="keyword">while</span> (start &lt; end) &#123;</span><br><span class="line">            <span class="keyword">if</span> (q[start] &lt; q[end]) &#123;</span><br><span class="line">                q[start + <span class="number">1</span>] += q[start];</span><br><span class="line">                start++;</span><br><span class="line">                times++;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (q[start] &gt; q[end]) &#123;</span><br><span class="line">                q[end - <span class="number">1</span>] += q[end];</span><br><span class="line">                end--;</span><br><span class="line">                times++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                start++;</span><br><span class="line">                end--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> times;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="题目四：优雅的点"><a href="#题目四：优雅的点" class="headerlink" title="题目四：优雅的点"></a>题目四：优雅的点</h3><blockquote>
+<p>小易有一个圆心在坐标原点的圆，小易知道圆的半径的平方。小易认为在圆上的点而且横纵坐标都是整数的点是优雅的，小易现在想寻找一个算法计算出优雅的点的个数，请你来帮帮他。<br>例如：半径的平方如果为25,优雅的点就有：(+/-3, +/-4), (+/-4, +/-3), (0, +/-5) (+/-5, 0)，一共12个点。 </p>
+</blockquote>
+<h4 id="输入描述-3"><a href="#输入描述-3" class="headerlink" title="输入描述"></a>输入描述</h4><blockquote>
+<p>输入为一个整数，即为圆半径的平方,范围在32位int范围内。如 25；</p>
+</blockquote>
+<h4 id="输出描述-3"><a href="#输出描述-3" class="headerlink" title="输出描述"></a>输出描述</h4><blockquote>
+<p>输出为一个整数，即为优雅的点的个数，即12。</p>
+</blockquote>
+<h4 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h4><h5 id="思路一："><a href="#思路一：" class="headerlink" title="思路一："></a>思路一：</h5><p>这是一开始的思路，但是复杂度过高，没有AC。<br>把n看成直角三角形的斜边的平方，那么就只需要找出可以构建直角三角形的坐标为整数的点即可；<br>由于圆心在坐标原点，只需要计算出第一象限的点，在乘以相应的倍数即可。如果点在坐标轴上，那么需要乘以2；如果点不在坐标轴上，就乘以4；<br>如此即可计算出所有坐标为整数且在圆上的点的个数；</p>
+<h5 id="思路二："><a href="#思路二：" class="headerlink" title="思路二："></a>思路二：</h5><p>由于思路一复杂度过高，就需要进行简化。<br>仍然只计算第一象限中的点，<br>将以上的判断点为两部分：在坐标轴上、不在坐标轴上。<br>但是判断是否为整数坐标更换为另外一种方法：<br>设横坐标为x，则纵坐标y=sqrt（n-x <code>*</code> x）;如果x <code>*</code> x+y <code>*</code> y=n,则这个点就是整数点（整型计算的特性）。<br>所有不在坐标轴的点在其他三个象限内都有对应的点，所以需要乘以4；<br>再来考虑坐标轴上的点，直接判断sqrt（n） × sqrt（n）==n；若是则再加4；因为最多就只有处在圆边缘的4个点。</p>
+<h4 id="Java实现"><a href="#Java实现" class="headerlink" title="Java实现"></a>Java实现</h4><h5 id="思路一：（未AC，结果正确）"><a href="#思路一：（未AC，结果正确）" class="headerlink" title="思路一：（未AC，结果正确）"></a>思路一：（未AC，结果正确）</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CirclePoint</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> m = in.nextInt();</span><br><span class="line">        System.out.println(point(m));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">point</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i * i &lt;= n; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j * j &lt;= n; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (i * i + j * j == n) &#123;</span><br><span class="line">                    <span class="keyword">if</span> ((i == <span class="number">0</span> &amp;&amp; j != <span class="number">0</span>) || (i != <span class="number">0</span> &amp;&amp; j == <span class="number">0</span>)) &#123;</span><br><span class="line">                        count += <span class="number">2</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        count += <span class="number">4</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="思路二：（已AC）"><a href="#思路二：（已AC）" class="headerlink" title="思路二：（已AC）"></a>思路二：（已AC）</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CirclePoint</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">int</span> m = in.nextInt();</span><br><span class="line">        System.out.println(point2(m));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">point2</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i * i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = (<span class="keyword">int</span>) Math.sqrt(n - i * i);</span><br><span class="line">            <span class="keyword">if</span> (i * i + j * j == n) &#123;</span><br><span class="line">                count++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        count*=<span class="number">4</span>;</span><br><span class="line">        <span class="keyword">int</span> x = (<span class="keyword">int</span>) Math.sqrt(n);</span><br><span class="line">        <span class="keyword">if</span> (x * x == n) &#123;</span><br><span class="line">            count += <span class="number">4</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="alphagao.com/2016/09/13/netease-campus-2017-algorithm-1/" data-id="ck5997sjr005fozp07ghy2ply" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AC/" rel="tag">AC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Campus/" rel="tag">Campus</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Netease/" rel="tag">Netease</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/04/listview-partial-load/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ListView的分批加载
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/30/view-mult-click/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">View多次点击事件的判断</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GraphQl/">GraphQl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pattern/">Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Water/">Water</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AC/" rel="tag">AC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/" rel="tag">Apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVM/" rel="tag">CVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/" rel="tag">Cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Campus/" rel="tag">Campus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Carousel/" rel="tag">Carousel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Click/" rel="tag">Click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Contacts/" rel="tag">Contacts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/" rel="tag">Customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decor/" rel="tag">Decor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Download/" rel="tag">Download</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Encapsulation/" rel="tag">Encapsulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Essay/" rel="tag">Essay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GTD/" rel="tag">GTD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gesture/" rel="tag">Gesture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Glide/" rel="tag">Glide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrqphQL/" rel="tag">GrqphQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Handler/" rel="tag">Handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IDEA/" rel="tag">IDEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InputFilter/" rel="tag">InputFilter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Intent/" rel="tag">Intent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LaunchMode/" rel="tag">LaunchMode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leak/" rel="tag">Leak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LetterIndexView/" rel="tag">LetterIndexView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ListView/" rel="tag">ListView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Location/" rel="tag">Location</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Looper/" rel="tag">Looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/" rel="tag">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Map/" rel="tag">Map</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Message/" rel="tag">Message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Model/" rel="tag">Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netease/" rel="tag">Netease</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OOP/" rel="tag">OOP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Partial/" rel="tag">Partial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pattern/" rel="tag">Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PhoneWindow/" rel="tag">PhoneWindow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Presenter/" rel="tag">Presenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Provider/" rel="tag">Provider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/" rel="tag">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Runnable/" rel="tag">Runnable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SOCKET/" rel="tag">SOCKET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scouce/" rel="tag">Scouce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service/" rel="tag">Service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shortcut/" rel="tag">Shortcut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Soft/" rel="tag">Soft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Speech/" rel="tag">Speech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Splash/" rel="tag">Splash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State/" rel="tag">State</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stragety/" rel="tag">Stragety</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Summary/" rel="tag">Summary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sync/" rel="tag">Sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toast/" rel="tag">Toast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ToggleButton/" rel="tag">ToggleButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/" rel="tag">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/View/" rel="tag">View</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager/" rel="tag">ViewPager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager%EF%BC%8CJob/" rel="tag">ViewPager，Job</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo/" rel="tag">apollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/call-log/" rel="tag">call-log</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conflict/" rel="tag">conflict</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/customize/" rel="tag">customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/factory/" rel="tag">factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fast-forword/" rel="tag">fast-forword</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/" rel="tag">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphql/" rel="tag">graphql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/" rel="tag">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iflytek/" rel="tag">iflytek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/" rel="tag">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mySql/" rel="tag">mySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/newcoder/" rel="tag">newcoder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/observer/" rel="tag">observer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/" rel="tag">pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroll/" rel="tag">scroll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrollview/" rel="tag">scrollview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solid/" rel="tag">solid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentao/" rel="tag">zentao</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%AE%A2/" rel="tag">极客</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AC/" style="font-size: 13.33px;">AC</a> <a href="/tags/Activity/" style="font-size: 16.67px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/CVM/" style="font-size: 10px;">CVM</a> <a href="/tags/Cache/" style="font-size: 10px;">Cache</a> <a href="/tags/Campus/" style="font-size: 10px;">Campus</a> <a href="/tags/Carousel/" style="font-size: 10px;">Carousel</a> <a href="/tags/Click/" style="font-size: 10px;">Click</a> <a href="/tags/Contacts/" style="font-size: 10px;">Contacts</a> <a href="/tags/Customize/" style="font-size: 10px;">Customize</a> <a href="/tags/Decor/" style="font-size: 10px;">Decor</a> <a href="/tags/Download/" style="font-size: 10px;">Download</a> <a href="/tags/Encapsulation/" style="font-size: 10px;">Encapsulation</a> <a href="/tags/Essay/" style="font-size: 10px;">Essay</a> <a href="/tags/GTD/" style="font-size: 10px;">GTD</a> <a href="/tags/Gesture/" style="font-size: 10px;">Gesture</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Glide/" style="font-size: 10px;">Glide</a> <a href="/tags/GrqphQL/" style="font-size: 13.33px;">GrqphQL</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Handler/" style="font-size: 13.33px;">Handler</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/InputFilter/" style="font-size: 10px;">InputFilter</a> <a href="/tags/Intent/" style="font-size: 10px;">Intent</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/LaunchMode/" style="font-size: 10px;">LaunchMode</a> <a href="/tags/Leak/" style="font-size: 10px;">Leak</a> <a href="/tags/LetterIndexView/" style="font-size: 10px;">LetterIndexView</a> <a href="/tags/ListView/" style="font-size: 13.33px;">ListView</a> <a href="/tags/Location/" style="font-size: 10px;">Location</a> <a href="/tags/Looper/" style="font-size: 10px;">Looper</a> <a href="/tags/MVP/" style="font-size: 10px;">MVP</a> <a href="/tags/Map/" style="font-size: 10px;">Map</a> <a href="/tags/Message/" style="font-size: 10px;">Message</a> <a href="/tags/Model/" style="font-size: 10px;">Model</a> <a href="/tags/Netease/" style="font-size: 10px;">Netease</a> <a href="/tags/OOP/" style="font-size: 10px;">OOP</a> <a href="/tags/Partial/" style="font-size: 10px;">Partial</a> <a href="/tags/Pattern/" style="font-size: 10px;">Pattern</a> <a href="/tags/PhoneWindow/" style="font-size: 10px;">PhoneWindow</a> <a href="/tags/Presenter/" style="font-size: 10px;">Presenter</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/REST/" style="font-size: 13.33px;">REST</a> <a href="/tags/RecyclerView/" style="font-size: 10px;">RecyclerView</a> <a href="/tags/Runnable/" style="font-size: 10px;">Runnable</a> <a href="/tags/SOCKET/" style="font-size: 10px;">SOCKET</a> <a href="/tags/Scouce/" style="font-size: 10px;">Scouce</a> <a href="/tags/Service/" style="font-size: 13.33px;">Service</a> <a href="/tags/Shortcut/" style="font-size: 10px;">Shortcut</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/Soft/" style="font-size: 10px;">Soft</a> <a href="/tags/Speech/" style="font-size: 10px;">Speech</a> <a href="/tags/Splash/" style="font-size: 10px;">Splash</a> <a href="/tags/State/" style="font-size: 10px;">State</a> <a href="/tags/Stragety/" style="font-size: 10px;">Stragety</a> <a href="/tags/Summary/" style="font-size: 10px;">Summary</a> <a href="/tags/Sync/" style="font-size: 10px;">Sync</a> <a href="/tags/Thread/" style="font-size: 16.67px;">Thread</a> <a href="/tags/Toast/" style="font-size: 10px;">Toast</a> <a href="/tags/ToggleButton/" style="font-size: 10px;">ToggleButton</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Ubuntu/" style="font-size: 13.33px;">Ubuntu</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/ViewPager/" style="font-size: 10px;">ViewPager</a> <a href="/tags/ViewPager%EF%BC%8CJob/" style="font-size: 10px;">ViewPager，Job</a> <a href="/tags/apollo/" style="font-size: 10px;">apollo</a> <a href="/tags/call-log/" style="font-size: 10px;">call-log</a> <a href="/tags/conflict/" style="font-size: 10px;">conflict</a> <a href="/tags/customize/" style="font-size: 10px;">customize</a> <a href="/tags/factory/" style="font-size: 10px;">factory</a> <a href="/tags/fast-forword/" style="font-size: 10px;">fast-forword</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graphql/" style="font-size: 10px;">graphql</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/iflytek/" style="font-size: 10px;">iflytek</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mySql/" style="font-size: 10px;">mySql</a> <a href="/tags/newcoder/" style="font-size: 10px;">newcoder</a> <a href="/tags/observer/" style="font-size: 10px;">observer</a> <a href="/tags/pattern/" style="font-size: 13.33px;">pattern</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/scroll/" style="font-size: 10px;">scroll</a> <a href="/tags/scrollview/" style="font-size: 10px;">scrollview</a> <a href="/tags/solid/" style="font-size: 10px;">solid</a> <a href="/tags/zentao/" style="font-size: 10px;">zentao</a> <a href="/tags/%E6%9E%81%E5%AE%A2/" style="font-size: 10px;">极客</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/28/using-with-nested-fragment-in-graphql/">using-with-nested-fragment-in-graphql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/geek-towards-ultimate/">极客：构建和谐社会？</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/03/talk-about-dream/">谈谈梦想吧</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/19/practise-in-mvp/">我的 MVP 帝国发展史</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/10/input-filter-size-and-type/">让 Android 输入框只能输入固定长度的中英文</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AlphaGao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JAVA线程同步 | Here&#39;s to Change</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="接触Android开发快半年了，虽然感觉自己已经可以从事基础的android开发，但是java基础还是比较薄弱。之前有一个电话面试，问到几个java题目，感觉自己也只是一知半解。今天特地来将其中一题拿出来仔细归纳，也就是java线程同步的问题。 在此之前需要先知晓几个概念：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA线程同步">
+<meta property="og:url" content="alphagao.com/2016/08/10/java-thread-sync/index.html">
+<meta property="og:site_name" content="Here&#39;s to Change">
+<meta property="og:description" content="接触Android开发快半年了，虽然感觉自己已经可以从事基础的android开发，但是java基础还是比较薄弱。之前有一个电话面试，问到几个java题目，感觉自己也只是一知半解。今天特地来将其中一题拿出来仔细归纳，也就是java线程同步的问题。 在此之前需要先知晓几个概念：">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-08-10T01:59:39.000Z">
+<meta property="article:modified_time" content="2020-01-11T07:12:36.801Z">
+<meta property="article:author" content="AlphaGao">
+<meta property="article:tag" content="Thread">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Sync">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Here&#39;s to Change" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Here&#39;s to Change</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">请问你真的有在努力吗 ？</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="alphagao.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java-thread-sync" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/10/java-thread-sync/" class="article-date">
+  <time datetime="2016-08-10T01:59:39.000Z" itemprop="datePublished">2016-08-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JAVA线程同步
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>接触Android开发快半年了，虽然感觉自己已经可以从事基础的android开发，但是java基础还是比较薄弱。之前有一个电话面试，问到几个java题目，感觉自己也只是一知半解。今天特地来将其中一题拿出来仔细归纳，也就是java线程同步的问题。</p>
+<p>在此之前需要先知晓几个概念：</p>
+<a id="more"></a>
+
+<ul>
+<li>原子性 <ul>
+<li>对于原子性的理解就是，判断某个操作是否为原子操作，若是，就说这个操作具有原子性。</li>
+<li>原子操作又是什么，一个不会被打断被阻塞的操作叫做原子操作。（不能只依靠代码的复杂度来判断是否为原子操作）</li>
+<li>一般来说，把某个操作反翻译为汇编语言，若该操作不能分解为多个汇编指令，那么这个操作就是原子操作。</li>
+<li>在Java中，对除了long和double之外的基本类型的简单操作都具有原子性。简单操作就是赋值或者return。</li>
+<li>参考<a href="http://www.parallellabs.com/2010/04/15/atomic-operation-in-multithreaded-application/" target="_blank" rel="noopener">http://www.parallellabs.com/2010/04/15/atomic-operation-in-multithreaded-application/</a></li>
+</ul>
+</li>
+<li>锁<ul>
+<li>每个对象都包含了一把锁（也叫作”监视器”）,它自动成为对象的一部分（不必为此写任何特殊的代码）</li>
+<li>每个对象的锁只能同时被一个线程持有</li>
+<li>相同的，每个类也有一把锁（作为类的class对象的一部分）</li>
+</ul>
+</li>
+<li>线程安全类<ul>
+<li>一个类中所有的字段已经通过同步以保护数据，那么就说这个类是“线程安全类”。</li>
+<li>即使是线程安全类，也应该特别小心，因为操作的线程之间仍然不一定安全。</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程同步是什么"><a href="#线程同步是什么" class="headerlink" title="线程同步是什么"></a>线程同步是什么</h3><p>简而言之，当有几个不同的线程需要同时操作同一个对象，而这几个线程对这个对像有读操作又有写操作的时候，因为操作行为互相穿插，而导致该对象表现出来的状态变得混乱的时候，程序也就发生异常。这个时候就需要线程同步，规定各个线程的操作顺序的逻辑，使对象的状态按照合理的逻辑进行改变。</p>
+<p><strong>举例</strong></p>
+<p>一个银行账户，同时被两个线程操作，一个存钱100块，一个取钱100块，账户原本余额为0元。这个时候会发生什么呢？先上原始代码：</p>
+<p>Account.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> myMoney=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">andMoney</span><span class="params">(<span class="keyword">float</span> money)</span></span>&#123;</span><br><span class="line">        myMoney+=money;</span><br><span class="line">        System.out.println(System.currentTimeMillis()+<span class="string">"存钱："</span>+money);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (myMoney-money&lt;<span class="number">0</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"余额不足！"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        myMoney-=money;</span><br><span class="line">        System.out.println(System.currentTimeMillis()+<span class="string">"取钱："</span>+money);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookMoney</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前余额："</span>+myMoney);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>SyncTest.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Account account=<span class="keyword">new</span> Account();</span><br><span class="line">        Thread threadAdd=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    account.andMoney(<span class="number">100</span>);</span><br><span class="line">                    account.lookMoney();</span><br><span class="line">                    System.out.println(<span class="string">"\n"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        Thread threadSub=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            </span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    account.subMoney(<span class="number">100</span>);</span><br><span class="line">                    account.lookMoney();</span><br><span class="line">                    System.out.println(<span class="string">"\n"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        threadAdd.start();</span><br><span class="line">        threadSub.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>截取了部分输出：</p>
+<pre><code>余额不足！
+当前余额：100.0
+
+1470797314168存钱：100.0
+当前余额：100.0
+
+1470797314670取钱：100.0
+当前余额：0.0
+1470797314670存钱：100.0
+
+当前余额：100.0
+
+1470797315170取钱：100.0
+当前余额：100.0
+
+1470797315170存钱：100.0
+当前余额：100.0</code></pre><p>很明显，输出的非常混乱，根本不合逻辑。这就是线程不同步造成的结果。</p>
+<h3 id="如何进行线程同步"><a href="#如何进行线程同步" class="headerlink" title="如何进行线程同步"></a>如何进行线程同步</h3><p>线程同步的方法有好几种，下面一一介绍。</p>
+<blockquote>
+<p><strong>注意：</strong> 以下几种方法只是说明可以实现线程同步的方法，按照各自的原理，并不一定都能解决例子中的问题。</p>
+</blockquote>
+<h4 id="使用synchronized关键字"><a href="#使用synchronized关键字" class="headerlink" title="使用synchronized关键字"></a>使用synchronized关键字</h4><p>synchronized关键字可以用于同步方法，也可以用于同步代码块。</p>
+<h5 id="修饰方法"><a href="#修饰方法" class="headerlink" title="修饰方法"></a>修饰方法</h5><p>由于java的每个对象都有一个内置锁，当用此关键字修饰方法时，内置锁会保护整个方法。在调用该方法前，需要获得内置锁，否则就处于阻塞状态。</p>
+<p>修改后的Account.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> myMoney=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">andMoney</span><span class="params">(<span class="keyword">float</span> money)</span></span>&#123;</span><br><span class="line">        myMoney+=money;</span><br><span class="line">        System.out.println(System.currentTimeMillis()+<span class="string">"存钱："</span>+money);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">subMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (myMoney-money&lt;<span class="number">0</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"余额不足！"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        myMoney-=money;</span><br><span class="line">        System.out.println(System.currentTimeMillis()+<span class="string">"取钱："</span>+money);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookMoney</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前余额："</span>+myMoney);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<pre><code>1470797960120存钱：100.0
+当前余额：100.0
+
+1470797960122取钱：100.0
+当前余额：0.0
+
+1470797960622存钱：100.0
+当前余额：100.0
+
+1470797960623取钱：100.0
+当前余额：0.0</code></pre><p>是不是变得有条理了呢。</p>
+<blockquote>
+<p><strong>注：</strong> synchronized也可以修饰静态方法，此时若调用该静态方法，会锁住整个类。</p>
+</blockquote>
+<h5 id="修饰代码块"><a href="#修饰代码块" class="headerlink" title="修饰代码块"></a>修饰代码块</h5><p>被该关键字修饰的语句块及相关的对象会自动被加上内置锁，从而实现同步。</p>
+<p>修改后的Account.java：</p>
+<p>注：为了使输出显示正确，将打印语句也放入同步代码块。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> myMoney=<span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">andMoney</span><span class="params">(<span class="keyword">float</span> money)</span></span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">            myMoney+=money;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(System.currentTimeMillis()+<span class="string">"存钱："</span>+money);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (myMoney-money&lt;<span class="number">0</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">"余额不足！"</span>);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            myMoney-=money;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(System.currentTimeMillis()+<span class="string">"取钱："</span>+money);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookMoney</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前余额："</span>+myMoney);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<pre><code>1470798732610存钱：100.0
+当前余额：100.0
+
+1470798732613取钱：100.0
+当前余额：0.0
+
+1470798733112存钱：100.0
+当前余额：100.0
+
+1470798733113取钱：100.0
+当前余额：0.0
+
+1470798733612存钱：100.0
+当前余额：100.0</code></pre><blockquote>
+<p><strong>注意:</strong> 同步是一种比较高开销的的操作，应该尽量减少同步的内容。如无必要，使用 synchronized 同步关键代码即可。</p>
+</blockquote>
+<h4 id="使用-volatile-关键字修饰变量"><a href="#使用-volatile-关键字修饰变量" class="headerlink" title="使用 volatile 关键字修饰变量"></a>使用 volatile 关键字修饰变量</h4><p>Java 还提供了另一个关键字，用来并发访问数据：volatile。这个关键字指明，应用代码使用字段或变量前，必须重新从主内存读取值。同样，修改使用 volatile 修饰的值后，在写入变量之后，必须存回主内存。</p>
+<ul>
+<li>volatile 不会提供任何原子操作，它也不能用来修饰final类型的变量</li>
+<li>参考<a href="http://www.ibm.com/developerworks/cn/java/j-jtp06197.html" target="_blank" rel="noopener">http://www.ibm.com/developerworks/cn/java/j-jtp06197.html</a></li>
+</ul>
+<p>修改后的Account.java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">float</span> myMoney = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">andMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        myMoney += money;</span><br><span class="line">        System.out.println(System.currentTimeMillis() + <span class="string">"存钱："</span> + money);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (myMoney - money &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"余额不足！"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        myMoney -= money;</span><br><span class="line">        System.out.println(System.currentTimeMillis() + <span class="string">"取钱："</span> + money);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookMoney</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前余额："</span> + myMoney);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>部分输出：</p>
+<pre><code>余额不足！
+1470829036190存钱：100.0
+当前余额：100.0
+当前余额：100.0
+
+1470829036692取钱：100.0
+当前余额：100.0
+
+1470829036692存钱：100.0
+当前余额：100.0
+
+1470829037192存钱：100.0
+当前余额：200.0
+
+1470829037192取钱：100.0
+当前余额：100.0</code></pre><p>感觉又不对了呢。因为<code>myMoney += money</code>和<code>myMoney -= money</code>都不是原子操作，而volatile并不能保证操作为原子性操作。如果严格遵循 volatile 的使用条件 —— 即变量真正独立于其他变量和自己以前的值,在某些情况下可以使用 volatile 代替 synchronized 来简化代码。然而，使用 volatile 的代码往往比使用锁的代码更加容易出错。</p>
+<h5 id="使用-volatile-的场景"><a href="#使用-volatile-的场景" class="headerlink" title="使用 volatile 的场景"></a>使用 volatile 的场景</h5><p>假定一个对像有一个布尔标记 done ，它的值被一个线程设置而被另一个线程查询，在这种情况下，可以使用加锁的方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">boolean</span> done;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">boolean</span> <span class="title">isDone</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> done;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setDone</span><span class="params">()</span></span>&#123;done=<span class="keyword">true</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但如果另外一个线程已经对这个对象加锁，isDone和setDone方法可能阻塞。而我们并不知道什么时候会释放锁。考虑到这个，一个线程可以为这一变量使用独立的lock。但是这也会带来许多麻烦。</p>
+<p>这个时候将该字段声明为 volatile 是合理的。</p>
+<h4 id="使用重入锁"><a href="#使用重入锁" class="headerlink" title="使用重入锁"></a>使用重入锁</h4><blockquote>
+<p>在JavaSE 5.0中新增了一个java.util.concurrent包来支持同步。ReentrantLock类是可重入、互斥、实现了Lock接口的锁， 它与使用 synchronized 方法和块具有相同的基本行为和语义，并且扩展了其能力。</p>
+</blockquote>
+<p>修改后的Account.java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> myMoney = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//声明重入锁</span></span><br><span class="line">    <span class="keyword">private</span> Lock lock=<span class="keyword">new</span> ReentrantLock();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">andMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            lock.lock();<span class="comment">//加锁</span></span><br><span class="line">            myMoney += money;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + <span class="string">"存钱："</span> + money);</span><br><span class="line">        &#125; <span class="keyword">finally</span>&#123;</span><br><span class="line">            lock.unlock();<span class="comment">//释放锁</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            lock.lock();</span><br><span class="line">            <span class="keyword">if</span> (myMoney - money &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">"余额不足！"</span>);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            myMoney -= money;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + <span class="string">"取钱："</span> + money);</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookMoney</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前余额："</span> + myMoney);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<pre><code>1470830515803存钱：100.0
+当前余额：100.0
+
+1470830515806取钱：100.0
+当前余额：0.0
+
+1470830516306存钱：100.0
+当前余额：100.0
+
+1470830516307取钱：100.0
+当前余额：0.0
+
+1470830516806存钱：100.0
+当前余额：100.0</code></pre><p>看的出来，结果与使用 synchronized 几乎相同。如果 synchronized 关键字能满足用户的需求，就用 synchronized，因为它能简化代码 。如果需要更高级的功能，就用 ReentrantLock 类。</p>
+<blockquote>
+<p><strong>注意：</strong> 要记得及时释放锁。否则会出现死锁。通常在 finall 代码块中释放锁。</p>
+</blockquote>
+<h4 id="使用-ThreadLocal-类管理类的局部字段"><a href="#使用-ThreadLocal-类管理类的局部字段" class="headerlink" title="使用 ThreadLocal 类管理类的局部字段"></a>使用 ThreadLocal 类管理类的局部字段</h4><p>修改后的Account.java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Float&gt; myMoney=<span class="keyword">new</span> ThreadLocal&lt;Float&gt;()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> Float <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0f</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">andMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        myMoney.set((myMoney.get()+money));</span><br><span class="line">        System.out.println(System.currentTimeMillis() + <span class="string">"存钱："</span> + money);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subMoney</span><span class="params">(<span class="keyword">float</span> money)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (myMoney.get()-money &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"余额不足！"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        myMoney.set(myMoney.get()-money);</span><br><span class="line">        System.out.println(System.currentTimeMillis() + <span class="string">"取钱："</span> + money);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookMoney</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前余额："</span> + myMoney.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<pre><code>余额不足！
+当前余额：0.0
+
+1480078228930存钱：100.0
+当前余额：100.0
+
+余额不足！
+当前余额：0.0
+
+1480078229434存钱：100.0
+当前余额：200.0
+
+余额不足！
+当前余额：0.0
+
+1480078229934存钱：100.0
+当前余额：300.0
+
+余额不足！
+当前余额：0.0
+
+1480078230435存钱：100.0
+当前余额：400.0
+
+余额不足！
+当前余额：0.0</code></pre><p>很明显，存钱操作可以进行，而取钱操作却一直余额不足。这是怎么回事呢。因为当线程访问一个被ThreadLocal管理的字段的时候，线程实际拿到的只是这个字段的一个拷贝。也就是说，取钱线程的myMoney的值始终是0；而存钱线程的myMoney因为不受条件的约束所以可以一直正常访问并修改。但是如果此时再开一个线程查看myMoney的余额，得到的仍然是0.</p>
+<p>ThreadLocal的常用方法：</p>
+<ul>
+<li>get()：返回当前线程拷贝的局部线程变量的值。</li>
+<li>initialValue()：返回当前线程赋予局部线程变量的初始值。</li>
+<li>remove()：移除当前线程赋予局部线程变量的值。</li>
+<li>set(T value)：为当前线程拷贝的局部线程变量设置一个特定的值。</li>
+</ul>
+<p>对比上面的代码，其实很好懂对吧。</p>
+<p>所以ThreadLocal和上面其他的同步机制是采取两种不同的思想实现线程同步。至于具体的使用场景，就得看业务需求咯。但至少我们知道，被ThreadLocal管理的变量，被在乎的就只是变量的初值，至于操作结束后的值，就看操作它的线程如何处理了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>一般多个线程访问某个类的私有变量，那么只需要将公有方法的关键代码包含在 synchronized 代码块中即可。<br>如果在此基础上还需要更好的扩展性，那么可以使用重入锁，即 ReentrantLock 类。<br>如果只关心变量的初值，那么就使用 ThreadLocal 管理该变量，到时候只需要向各个线程分发变量的拷贝即可。<br>而 volatile 的使用，正如在 volatile 一节中的例子那样，条件是比较极端的。</p>
+<p>本文参考 <a href="http://blog.csdn.net/wenwen091100304/article/details/48318699" target="_blank" rel="noopener">http://blog.csdn.net/wenwen091100304/article/details/48318699</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="alphagao.com/2016/08/10/java-thread-sync/" data-id="ck5997sjm0059ozp03snt40xr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sync/" rel="tag">Sync</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/17/gesture-identify/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android 手势识别
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/06/toast-encapsulation/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">小试Toast封装</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GraphQl/">GraphQl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pattern/">Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Water/">Water</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AC/" rel="tag">AC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/" rel="tag">Apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVM/" rel="tag">CVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/" rel="tag">Cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Campus/" rel="tag">Campus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Carousel/" rel="tag">Carousel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Click/" rel="tag">Click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Contacts/" rel="tag">Contacts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/" rel="tag">Customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decor/" rel="tag">Decor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Download/" rel="tag">Download</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Encapsulation/" rel="tag">Encapsulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Essay/" rel="tag">Essay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GTD/" rel="tag">GTD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gesture/" rel="tag">Gesture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Glide/" rel="tag">Glide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrqphQL/" rel="tag">GrqphQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Handler/" rel="tag">Handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IDEA/" rel="tag">IDEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InputFilter/" rel="tag">InputFilter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Intent/" rel="tag">Intent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LaunchMode/" rel="tag">LaunchMode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leak/" rel="tag">Leak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LetterIndexView/" rel="tag">LetterIndexView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ListView/" rel="tag">ListView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Location/" rel="tag">Location</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Looper/" rel="tag">Looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/" rel="tag">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Map/" rel="tag">Map</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Message/" rel="tag">Message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Model/" rel="tag">Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netease/" rel="tag">Netease</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OOP/" rel="tag">OOP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Partial/" rel="tag">Partial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pattern/" rel="tag">Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PhoneWindow/" rel="tag">PhoneWindow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Presenter/" rel="tag">Presenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Provider/" rel="tag">Provider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/" rel="tag">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Runnable/" rel="tag">Runnable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SOCKET/" rel="tag">SOCKET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scouce/" rel="tag">Scouce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service/" rel="tag">Service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shortcut/" rel="tag">Shortcut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Soft/" rel="tag">Soft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Speech/" rel="tag">Speech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Splash/" rel="tag">Splash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State/" rel="tag">State</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stragety/" rel="tag">Stragety</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Summary/" rel="tag">Summary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sync/" rel="tag">Sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toast/" rel="tag">Toast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ToggleButton/" rel="tag">ToggleButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/" rel="tag">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/View/" rel="tag">View</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager/" rel="tag">ViewPager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager%EF%BC%8CJob/" rel="tag">ViewPager，Job</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo/" rel="tag">apollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/call-log/" rel="tag">call-log</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conflict/" rel="tag">conflict</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/customize/" rel="tag">customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/factory/" rel="tag">factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fast-forword/" rel="tag">fast-forword</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/" rel="tag">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphql/" rel="tag">graphql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/" rel="tag">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iflytek/" rel="tag">iflytek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/" rel="tag">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mySql/" rel="tag">mySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/newcoder/" rel="tag">newcoder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/observer/" rel="tag">observer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/" rel="tag">pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroll/" rel="tag">scroll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrollview/" rel="tag">scrollview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solid/" rel="tag">solid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentao/" rel="tag">zentao</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%AE%A2/" rel="tag">极客</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AC/" style="font-size: 13.33px;">AC</a> <a href="/tags/Activity/" style="font-size: 16.67px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/CVM/" style="font-size: 10px;">CVM</a> <a href="/tags/Cache/" style="font-size: 10px;">Cache</a> <a href="/tags/Campus/" style="font-size: 10px;">Campus</a> <a href="/tags/Carousel/" style="font-size: 10px;">Carousel</a> <a href="/tags/Click/" style="font-size: 10px;">Click</a> <a href="/tags/Contacts/" style="font-size: 10px;">Contacts</a> <a href="/tags/Customize/" style="font-size: 10px;">Customize</a> <a href="/tags/Decor/" style="font-size: 10px;">Decor</a> <a href="/tags/Download/" style="font-size: 10px;">Download</a> <a href="/tags/Encapsulation/" style="font-size: 10px;">Encapsulation</a> <a href="/tags/Essay/" style="font-size: 10px;">Essay</a> <a href="/tags/GTD/" style="font-size: 10px;">GTD</a> <a href="/tags/Gesture/" style="font-size: 10px;">Gesture</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Glide/" style="font-size: 10px;">Glide</a> <a href="/tags/GrqphQL/" style="font-size: 13.33px;">GrqphQL</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Handler/" style="font-size: 13.33px;">Handler</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/InputFilter/" style="font-size: 10px;">InputFilter</a> <a href="/tags/Intent/" style="font-size: 10px;">Intent</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/LaunchMode/" style="font-size: 10px;">LaunchMode</a> <a href="/tags/Leak/" style="font-size: 10px;">Leak</a> <a href="/tags/LetterIndexView/" style="font-size: 10px;">LetterIndexView</a> <a href="/tags/ListView/" style="font-size: 13.33px;">ListView</a> <a href="/tags/Location/" style="font-size: 10px;">Location</a> <a href="/tags/Looper/" style="font-size: 10px;">Looper</a> <a href="/tags/MVP/" style="font-size: 10px;">MVP</a> <a href="/tags/Map/" style="font-size: 10px;">Map</a> <a href="/tags/Message/" style="font-size: 10px;">Message</a> <a href="/tags/Model/" style="font-size: 10px;">Model</a> <a href="/tags/Netease/" style="font-size: 10px;">Netease</a> <a href="/tags/OOP/" style="font-size: 10px;">OOP</a> <a href="/tags/Partial/" style="font-size: 10px;">Partial</a> <a href="/tags/Pattern/" style="font-size: 10px;">Pattern</a> <a href="/tags/PhoneWindow/" style="font-size: 10px;">PhoneWindow</a> <a href="/tags/Presenter/" style="font-size: 10px;">Presenter</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/REST/" style="font-size: 13.33px;">REST</a> <a href="/tags/RecyclerView/" style="font-size: 10px;">RecyclerView</a> <a href="/tags/Runnable/" style="font-size: 10px;">Runnable</a> <a href="/tags/SOCKET/" style="font-size: 10px;">SOCKET</a> <a href="/tags/Scouce/" style="font-size: 10px;">Scouce</a> <a href="/tags/Service/" style="font-size: 13.33px;">Service</a> <a href="/tags/Shortcut/" style="font-size: 10px;">Shortcut</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/Soft/" style="font-size: 10px;">Soft</a> <a href="/tags/Speech/" style="font-size: 10px;">Speech</a> <a href="/tags/Splash/" style="font-size: 10px;">Splash</a> <a href="/tags/State/" style="font-size: 10px;">State</a> <a href="/tags/Stragety/" style="font-size: 10px;">Stragety</a> <a href="/tags/Summary/" style="font-size: 10px;">Summary</a> <a href="/tags/Sync/" style="font-size: 10px;">Sync</a> <a href="/tags/Thread/" style="font-size: 16.67px;">Thread</a> <a href="/tags/Toast/" style="font-size: 10px;">Toast</a> <a href="/tags/ToggleButton/" style="font-size: 10px;">ToggleButton</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Ubuntu/" style="font-size: 13.33px;">Ubuntu</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/ViewPager/" style="font-size: 10px;">ViewPager</a> <a href="/tags/ViewPager%EF%BC%8CJob/" style="font-size: 10px;">ViewPager，Job</a> <a href="/tags/apollo/" style="font-size: 10px;">apollo</a> <a href="/tags/call-log/" style="font-size: 10px;">call-log</a> <a href="/tags/conflict/" style="font-size: 10px;">conflict</a> <a href="/tags/customize/" style="font-size: 10px;">customize</a> <a href="/tags/factory/" style="font-size: 10px;">factory</a> <a href="/tags/fast-forword/" style="font-size: 10px;">fast-forword</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graphql/" style="font-size: 10px;">graphql</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/iflytek/" style="font-size: 10px;">iflytek</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mySql/" style="font-size: 10px;">mySql</a> <a href="/tags/newcoder/" style="font-size: 10px;">newcoder</a> <a href="/tags/observer/" style="font-size: 10px;">observer</a> <a href="/tags/pattern/" style="font-size: 13.33px;">pattern</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/scroll/" style="font-size: 10px;">scroll</a> <a href="/tags/scrollview/" style="font-size: 10px;">scrollview</a> <a href="/tags/solid/" style="font-size: 10px;">solid</a> <a href="/tags/zentao/" style="font-size: 10px;">zentao</a> <a href="/tags/%E6%9E%81%E5%AE%A2/" style="font-size: 10px;">极客</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/28/using-with-nested-fragment-in-graphql/">using-with-nested-fragment-in-graphql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/geek-towards-ultimate/">极客：构建和谐社会？</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/03/talk-about-dream/">谈谈梦想吧</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/19/practise-in-mvp/">我的 MVP 帝国发展史</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/10/input-filter-size-and-type/">让 Android 输入框只能输入固定长度的中英文</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AlphaGao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

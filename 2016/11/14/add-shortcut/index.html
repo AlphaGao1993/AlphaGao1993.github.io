@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>桌面添加图标心碎二三事[摔] | Here&#39;s to Change</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="虽然开发过程中经常会中奖踩坑，但是这次真的踩了很大的坑啊，感觉填了很久踩勉强填好。当然也只是对我来说，在大神眼里根本不算什么。事情是这样的，两天前我需要在 App 被安装的时候，向桌面添加一个快捷图标，来增强在用户眼里的存在感。。。由于在此之前我正好给 App 换了个图标，虽然是 png 格式，但是宽高病不同，分辨率大概是 620×610 的样子，基本是个正方形，而且用于 App 的桌面图标也没有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="桌面添加图标心碎二三事[摔]">
+<meta property="og:url" content="alphagao.com/2016/11/14/add-shortcut/index.html">
+<meta property="og:site_name" content="Here&#39;s to Change">
+<meta property="og:description" content="虽然开发过程中经常会中奖踩坑，但是这次真的踩了很大的坑啊，感觉填了很久踩勉强填好。当然也只是对我来说，在大神眼里根本不算什么。事情是这样的，两天前我需要在 App 被安装的时候，向桌面添加一个快捷图标，来增强在用户眼里的存在感。。。由于在此之前我正好给 App 换了个图标，虽然是 png 格式，但是宽高病不同，分辨率大概是 620×610 的样子，基本是个正方形，而且用于 App 的桌面图标也没有">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-11-14T02:40:14.000Z">
+<meta property="article:modified_time" content="2020-01-11T07:12:36.798Z">
+<meta property="article:author" content="AlphaGao">
+<meta property="article:tag" content="Shortcut">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Here&#39;s to Change" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Here&#39;s to Change</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">请问你真的有在努力吗 ？</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="alphagao.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-add-shortcut" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/14/add-shortcut/" class="article-date">
+  <time datetime="2016-11-14T02:40:14.000Z" itemprop="datePublished">2016-11-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      桌面添加图标心碎二三事[摔]
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>虽然开发过程中经常会中奖踩坑，但是这次真的踩了很大的坑啊，感觉填了很久踩勉强填好。当然也只是对我来说，在大神眼里根本不算什么。事情是这样的，两天前我需要在 App 被安装的时候，向桌面添加一个快捷图标，来增强在用户眼里的存在感。。。由于在此之前我正好给 App 换了个图标，虽然是 png 格式，但是宽高病不同，分辨率大概是 620×610 的样子，基本是个正方形，而且用于 App 的桌面图标也没有什么问题，可以正常显示。但是在用于给 App 添加桌面快捷方式的时候，却死活也不显示，明明 log 显示确实已经添加了，代码执行良好，也没有报错和警告，但就是死活看不到。这是第一个坑。</p>
+<a id="more"></a>
+<p>于是重新创建了一个小工程，用了完全相同的代码，只不过 App 图标是自带的，我没有更换。一执行，居然成功了！我简直惊呆了。仔细对比觉得唯一的可能就是出在照片上了。于是把原来的图标裁剪了一下，改成完全的正方型 610×610 ，还是不显示。没办法，直接用了另外一张照片，标准的 MD 风格的 png，再一执行，果然创建成功了。看来 AS 对照片的检查还真不是一般的严格，之前在 Eclipse 里还能用的 .9 图片，在 AS 里会报错，这次看来也一样，只是 AS 却没有任何表示，以后在照片的使用上必须多加注意。第一个坑填好。</p>
+<p>然后就要给快捷图标添加点击 Intent ，在这里尝试了很多次，才找到正确的方法。具体的常识过程太啰嗦，就不详细讲了，主要讲一下在这个过程得到的经验吧。</p>
+<ol>
+<li>首先需要在点击 Intent 要开启的 Activity 的 manifest 里添加 IntentFilter 标签；</li>
+<li>manifest 的 IntentFilter 标签里必须包含一个 Action ，这个 Action 的名字可以随便命名；</li>
+<li>manifest 的 IntentFilter 添加 category 不是必须的，可以不加；</li>
+<li>在代码里创建的 点击 Intent 可以通过构造方法添加隐式 Intent 来开启目标 Activity ，隐式 Intent 里就是在 manifest 的 IntentFilter 设置的 Action ；但是这种开启方法不能与自己的 App 绑定，也就是 App 卸载后图标不会自动被移除；</li>
+<li>点击 Intent 通过 setClass() 设置源和目标 Activity 来开启，并且可以与自己的 App 绑定，App 卸载后图标会被移除；</li>
+<li>点击 Intent 可以不用再设置 action 和 category；</li>
+<li>使用快捷方式打开的 Activity 最好设为 Single Instance 启动模式，或者为点击 Intent 设置必要的 flag ，以免重复打开相同的 Activity ；</li>
+<li>在sendBoradcast()中的 intent 设置 intent.putExtra(“duplicate”, false) 不能保证可以避免重复创建快捷方式，这是最后一个坑，大坑啊，见后文。</li>
+</ol>
+<p>所以我的添加快捷方式的代码是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent();</span><br><span class="line">        intent.setAction(<span class="string">"com.android.launcher.action.INSTALL_SHORTCUT"</span>);</span><br><span class="line">        <span class="comment">//快捷方式名字</span></span><br><span class="line">        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));</span><br><span class="line">        <span class="comment">//快捷方式图标</span></span><br><span class="line">        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_shortcut);</span><br><span class="line">        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);</span><br><span class="line">        <span class="comment">//不能保证可以避免重复创建</span></span><br><span class="line">        intent.putExtra(<span class="string">"duplicate"</span>, <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//快捷方式点击执行的意图</span></span><br><span class="line">        Intent actionIntent = <span class="keyword">new</span> Intent();</span><br><span class="line">        actionIntent.setClass(SplashActivity.<span class="keyword">this</span>, HomeActivity<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        <span class="comment">//actionIntent.setAction(Intent.ACTION_MAIN);</span></span><br><span class="line">        <span class="comment">//actionIntent.addCategory(Intent.CATEGORY_LAUNCHER);</span></span><br><span class="line"></span><br><span class="line">        intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, actionIntent);</span><br><span class="line">        <span class="comment">//以发送广播的形式创建快捷方式</span></span><br><span class="line">        sendBroadcast(intent);</span><br></pre></td></tr></table></figure>
+
+<p>因为 <code>intent.putExtra(&quot;duplicate&quot;, false);</code> 这一句代码不能保证可以避免重复创建快捷方式（在虚拟机测试有效，但在 htc 真机上无效），所以还需要自己来判断是否已经存在相同的快捷方式。这这里耗费了将近一天的时间来测试，真的无所不用其极，感觉已经翻遍 google 了。这里不得不吐槽了 Android 各种机型想要完全适配工作量真的是太大了，现在屏幕上的适配反而比较容易，但是对各大厂商自己定制的 ROM ，那才是最大的沟渠啊，就桌面 Launcher 来说，每种手机都有自己的定制版，那么对于相应的权限，提供认证的 provider 都可能不同，适配起来也就无比麻烦。同时 Android 不同的版本也可能存在不同的 Launcher ，就现在的 Android 原生来说，已经有 3 个版本的 Launcher 了：launcher、launcher2 和 launcher3 。</p>
+<p>下面是碰到的几种错误 log 和解释：</p>
+<h5 id="Failed-to-find-provider-info-for-com-android-launcher-settings"><a href="#Failed-to-find-provider-info-for-com-android-launcher-settings" class="headerlink" title="Failed to find provider info for com.android.launcher.settings"></a>Failed to find provider info for com.android.launcher.settings</h5><p>这个是因为 Android SDK 版本的不同，系统 launcher 版本也有变化，可能回事 launcher2，或者 launcher3，或者其他 ROM 的自家 launcher；</p>
+<h5 id="getAuthorityFromPermission-返回-null"><a href="#getAuthorityFromPermission-返回-null" class="headerlink" title="getAuthorityFromPermission 返回 null"></a>getAuthorityFromPermission 返回 null</h5><p>这个方法是现在网络上普遍使用的可以根据权限来识别认证的 provider，但是网络版本还不够完善，因为经过测试发现，传入的 permission 不一定能够匹配所有的机型的 permission ，也就不能保证能够传回想要的 provider ，在这里我做了一些改进，最终能够在 htc 真机和虚拟机测试通过；</p>
+<h5 id="Permission-Denial-opening-provider-com-android-launcher3-LauncherProvider-from-ProcessRecord-f264d45-13880-com-example-alpha-mobilesafe-u0a68-pid-13880-uid-10068-requires-com-google-android-launcher-permission-READ-SETTINGS-or-com-google-android-launcher-permission-WRITE-SETTINGS"><a href="#Permission-Denial-opening-provider-com-android-launcher3-LauncherProvider-from-ProcessRecord-f264d45-13880-com-example-alpha-mobilesafe-u0a68-pid-13880-uid-10068-requires-com-google-android-launcher-permission-READ-SETTINGS-or-com-google-android-launcher-permission-WRITE-SETTINGS" class="headerlink" title="Permission Denial: opening provider com.android.launcher3.LauncherProvider from ProcessRecord{f264d45 13880:com.example.alpha.mobilesafe/u0a68} (pid=13880, uid=10068) requires com.google.android.launcher.permission.READ_SETTINGS or com.google.android.launcher.permission.WRITE_SETTINGS"></a>Permission Denial: opening provider com.android.launcher3.LauncherProvider from ProcessRecord{f264d45 13880:com.example.alpha.mobilesafe/u0a68} (pid=13880, uid=10068) requires com.google.android.launcher.permission.READ_SETTINGS or com.google.android.launcher.permission.WRITE_SETTINGS</h5><p>很明显，因为虚拟机是 Nexus4，还需要添加 google 的权限：<br><code>com.google.android.launcher.permission.READ_SETTINGS</code></p>
+<p>接下来主要说说适配的一点小技巧，也是最后一个坑：</p>
+<p>网络版本的 <code>getAuthorityFromPermission</code> 是直接传入一个完整的 permission ，而我只是传入了半个，比如：<code>.launcher.permission.READ_SETTINGS</code> ，因为我发现不管是虚拟机，还是真机，在权限上都包含这一部分，既然如此，就通过是否包含来判断对应烦人 authority ，但是在 htc 真机上又有个问题， authority 总是传回 <code>com.htc.launcher.ExternalApp</code>而不是我想要的<code>com.htc.launcher.settings</code>，所以在回传结果的再加一次判断：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (provider.authority.contains(<span class="string">"launcher.settings"</span>)</span><br><span class="line">        || provider.authority.contains(<span class="string">"launcher2.settings"</span>)</span><br><span class="line">        || provider.authority.contains(<span class="string">"launcher3.settings"</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> provider.authority;</span><br></pre></td></tr></table></figure>
+
+<p>不过这样虽然可以达到我们想要的结果，但是这个方法的适用范围就仅限于此了。这个就需要大家自己斟酌了。</p>
+<p>最后贴上完整的代码：</p>
+<p>manifest：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"com.android.launcher.permission.READ_SETTINGS"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"com.htc.launcher.permission.READ_SETTINGS"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"com.android.launcher2.permission.READ_SETTINGS"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"com.android.launcher3.permission.READ_SETTINGS"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"com.google.android.launcher.permission.READ_SETTINGS"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".Activity.HomeActivity"</span> <span class="attr">android:launchMode</span>=<span class="string">"singleInstance"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.example.alpha.mobilesafe.home"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>添加 shortcut</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 创建桌面快捷方式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addShortCut</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (AppInfoUtils.hasShortCut(<span class="keyword">this</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Intent intent = <span class="keyword">new</span> Intent();</span><br><span class="line">    intent.setAction(<span class="string">"com.android.launcher.action.INSTALL_SHORTCUT"</span>);</span><br><span class="line">    <span class="comment">//快捷方式名字</span></span><br><span class="line">    intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));</span><br><span class="line">    <span class="comment">//快捷方式图标</span></span><br><span class="line">    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_shortcut);</span><br><span class="line">    intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);</span><br><span class="line">    <span class="comment">//不要重复创建</span></span><br><span class="line">    intent.putExtra(<span class="string">"duplicate"</span>, <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//快捷方式点击执行的意图</span></span><br><span class="line">    Intent actionIntent = <span class="keyword">new</span> Intent();</span><br><span class="line">    actionIntent.setClass(SplashActivity.<span class="keyword">this</span>, HomeActivity<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    <span class="comment">//不是必须的</span></span><br><span class="line">    <span class="comment">//actionIntent.setAction(Intent.ACTION_MAIN);</span></span><br><span class="line">    <span class="comment">//actionIntent.addCategory(Intent.CATEGORY_LAUNCHER);</span></span><br><span class="line"></span><br><span class="line">    intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, actionIntent);</span><br><span class="line">    <span class="comment">//以发送广播的形式创建快捷方式</span></span><br><span class="line">    sendBroadcast(intent);</span><br><span class="line">    Log.d(TAG, <span class="string">"addShortCut: 桌面图标添加完成"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 判断当前应用是否已经创建快捷图标</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> context 上下文</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 是否创建</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">hasShortCut</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</span><br><span class="line">    String authority = getAuthorityFromPermission(context,</span><br><span class="line">            <span class="string">".launcher.permission.READ_SETTINGS"</span>);</span><br><span class="line">    Log.d(TAG, <span class="string">"hasShortCut: authority是什么呢？"</span>+authority);</span><br><span class="line"></span><br><span class="line">    String uriStr = <span class="string">"content://"</span> + authority + <span class="string">"/favorites?notify=true"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Cursor cursor = context.getContentResolver().query(</span><br><span class="line">                Uri.parse(uriStr),</span><br><span class="line">                <span class="keyword">null</span>,</span><br><span class="line">                <span class="string">"title=?"</span>,</span><br><span class="line">                <span class="keyword">new</span> String[]&#123;context.getString(R.string.app_name)&#125;,</span><br><span class="line">                <span class="keyword">null</span>);</span><br><span class="line">        result = cursor != <span class="keyword">null</span> &amp;&amp; cursor.getCount() &gt; <span class="number">0</span>;</span><br><span class="line">        Log.d(TAG, String.valueOf(<span class="string">"hasShortCut: 有没有图标啊？"</span> + result));</span><br><span class="line">        <span class="keyword">if</span> (cursor != <span class="keyword">null</span>) &#123;</span><br><span class="line">            cursor.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据传入的权限名查找目标 authority</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> context 上下文</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> permission 部分权限名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 目标 authority</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getAuthorityFromPermission</span><span class="params">(Context context, String permission)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (permission == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    List&lt;PackageInfo&gt; installedPackages = context.getPackageManager()</span><br><span class="line">            .getInstalledPackages(PackageManager.GET_PROVIDERS);</span><br><span class="line">    <span class="keyword">if</span> (installedPackages != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (PackageInfo pack : installedPackages) &#123;</span><br><span class="line">            ProviderInfo[] providers = pack.providers;</span><br><span class="line">            <span class="keyword">if</span> (providers != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (ProviderInfo provider : providers) &#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"getAuthorityFromPermission: "</span> + provider.readPermission);</span><br><span class="line">                    <span class="comment">//Log.d(TAG, "getAuthorityFromPermission: " + provider.writePermission);</span></span><br><span class="line">                    <span class="keyword">if</span> (provider.readPermission != <span class="keyword">null</span> &amp;&amp; provider.readPermission.contains(permission)) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (provider.authority.contains(<span class="string">"launcher.settings"</span>)</span><br><span class="line">                                || provider.authority.contains(<span class="string">"launcher2.settings"</span>)</span><br><span class="line">                                || provider.authority.contains(<span class="string">"launcher3.settings"</span>)) &#123;</span><br><span class="line">                            <span class="keyword">return</span> provider.authority;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样无论是真机还是虚拟机，都可以判断是否已经存在快捷方式，而且根据我的方法，我想还是存在一定的广泛型，可以匹配大部分机型，当然仅限这一功能了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="alphagao.com/2016/11/14/add-shortcut/" data-id="ck5997sij004xozp09uc1efk2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shortcut/" rel="tag">Shortcut</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/19/udp-socket-sample/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          基于 UDP 协议的 C/S 通信案例
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/10/move-hexo-to-qcloud/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">迁移 Hexo 到腾讯云服务器 CVM</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GraphQl/">GraphQl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pattern/">Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Water/">Water</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AC/" rel="tag">AC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/" rel="tag">Apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVM/" rel="tag">CVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/" rel="tag">Cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Campus/" rel="tag">Campus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Carousel/" rel="tag">Carousel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Click/" rel="tag">Click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Contacts/" rel="tag">Contacts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/" rel="tag">Customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decor/" rel="tag">Decor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Download/" rel="tag">Download</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Encapsulation/" rel="tag">Encapsulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Essay/" rel="tag">Essay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GTD/" rel="tag">GTD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gesture/" rel="tag">Gesture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Glide/" rel="tag">Glide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrqphQL/" rel="tag">GrqphQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Handler/" rel="tag">Handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IDEA/" rel="tag">IDEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InputFilter/" rel="tag">InputFilter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Intent/" rel="tag">Intent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LaunchMode/" rel="tag">LaunchMode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leak/" rel="tag">Leak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LetterIndexView/" rel="tag">LetterIndexView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ListView/" rel="tag">ListView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Location/" rel="tag">Location</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Looper/" rel="tag">Looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/" rel="tag">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Map/" rel="tag">Map</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Message/" rel="tag">Message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Model/" rel="tag">Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netease/" rel="tag">Netease</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OOP/" rel="tag">OOP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Partial/" rel="tag">Partial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pattern/" rel="tag">Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PhoneWindow/" rel="tag">PhoneWindow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Presenter/" rel="tag">Presenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Provider/" rel="tag">Provider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/" rel="tag">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Runnable/" rel="tag">Runnable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SOCKET/" rel="tag">SOCKET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scouce/" rel="tag">Scouce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service/" rel="tag">Service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shortcut/" rel="tag">Shortcut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Soft/" rel="tag">Soft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Speech/" rel="tag">Speech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Splash/" rel="tag">Splash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State/" rel="tag">State</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stragety/" rel="tag">Stragety</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Summary/" rel="tag">Summary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sync/" rel="tag">Sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toast/" rel="tag">Toast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ToggleButton/" rel="tag">ToggleButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/" rel="tag">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/View/" rel="tag">View</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager/" rel="tag">ViewPager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager%EF%BC%8CJob/" rel="tag">ViewPager，Job</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo/" rel="tag">apollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/call-log/" rel="tag">call-log</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conflict/" rel="tag">conflict</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/customize/" rel="tag">customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/factory/" rel="tag">factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fast-forword/" rel="tag">fast-forword</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/" rel="tag">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphql/" rel="tag">graphql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/" rel="tag">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iflytek/" rel="tag">iflytek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/" rel="tag">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mySql/" rel="tag">mySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/newcoder/" rel="tag">newcoder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/observer/" rel="tag">observer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/" rel="tag">pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroll/" rel="tag">scroll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrollview/" rel="tag">scrollview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solid/" rel="tag">solid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentao/" rel="tag">zentao</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%AE%A2/" rel="tag">极客</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AC/" style="font-size: 13.33px;">AC</a> <a href="/tags/Activity/" style="font-size: 16.67px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/CVM/" style="font-size: 10px;">CVM</a> <a href="/tags/Cache/" style="font-size: 10px;">Cache</a> <a href="/tags/Campus/" style="font-size: 10px;">Campus</a> <a href="/tags/Carousel/" style="font-size: 10px;">Carousel</a> <a href="/tags/Click/" style="font-size: 10px;">Click</a> <a href="/tags/Contacts/" style="font-size: 10px;">Contacts</a> <a href="/tags/Customize/" style="font-size: 10px;">Customize</a> <a href="/tags/Decor/" style="font-size: 10px;">Decor</a> <a href="/tags/Download/" style="font-size: 10px;">Download</a> <a href="/tags/Encapsulation/" style="font-size: 10px;">Encapsulation</a> <a href="/tags/Essay/" style="font-size: 10px;">Essay</a> <a href="/tags/GTD/" style="font-size: 10px;">GTD</a> <a href="/tags/Gesture/" style="font-size: 10px;">Gesture</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Glide/" style="font-size: 10px;">Glide</a> <a href="/tags/GrqphQL/" style="font-size: 13.33px;">GrqphQL</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Handler/" style="font-size: 13.33px;">Handler</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/InputFilter/" style="font-size: 10px;">InputFilter</a> <a href="/tags/Intent/" style="font-size: 10px;">Intent</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/LaunchMode/" style="font-size: 10px;">LaunchMode</a> <a href="/tags/Leak/" style="font-size: 10px;">Leak</a> <a href="/tags/LetterIndexView/" style="font-size: 10px;">LetterIndexView</a> <a href="/tags/ListView/" style="font-size: 13.33px;">ListView</a> <a href="/tags/Location/" style="font-size: 10px;">Location</a> <a href="/tags/Looper/" style="font-size: 10px;">Looper</a> <a href="/tags/MVP/" style="font-size: 10px;">MVP</a> <a href="/tags/Map/" style="font-size: 10px;">Map</a> <a href="/tags/Message/" style="font-size: 10px;">Message</a> <a href="/tags/Model/" style="font-size: 10px;">Model</a> <a href="/tags/Netease/" style="font-size: 10px;">Netease</a> <a href="/tags/OOP/" style="font-size: 10px;">OOP</a> <a href="/tags/Partial/" style="font-size: 10px;">Partial</a> <a href="/tags/Pattern/" style="font-size: 10px;">Pattern</a> <a href="/tags/PhoneWindow/" style="font-size: 10px;">PhoneWindow</a> <a href="/tags/Presenter/" style="font-size: 10px;">Presenter</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/REST/" style="font-size: 13.33px;">REST</a> <a href="/tags/RecyclerView/" style="font-size: 10px;">RecyclerView</a> <a href="/tags/Runnable/" style="font-size: 10px;">Runnable</a> <a href="/tags/SOCKET/" style="font-size: 10px;">SOCKET</a> <a href="/tags/Scouce/" style="font-size: 10px;">Scouce</a> <a href="/tags/Service/" style="font-size: 13.33px;">Service</a> <a href="/tags/Shortcut/" style="font-size: 10px;">Shortcut</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/Soft/" style="font-size: 10px;">Soft</a> <a href="/tags/Speech/" style="font-size: 10px;">Speech</a> <a href="/tags/Splash/" style="font-size: 10px;">Splash</a> <a href="/tags/State/" style="font-size: 10px;">State</a> <a href="/tags/Stragety/" style="font-size: 10px;">Stragety</a> <a href="/tags/Summary/" style="font-size: 10px;">Summary</a> <a href="/tags/Sync/" style="font-size: 10px;">Sync</a> <a href="/tags/Thread/" style="font-size: 16.67px;">Thread</a> <a href="/tags/Toast/" style="font-size: 10px;">Toast</a> <a href="/tags/ToggleButton/" style="font-size: 10px;">ToggleButton</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Ubuntu/" style="font-size: 13.33px;">Ubuntu</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/ViewPager/" style="font-size: 10px;">ViewPager</a> <a href="/tags/ViewPager%EF%BC%8CJob/" style="font-size: 10px;">ViewPager，Job</a> <a href="/tags/apollo/" style="font-size: 10px;">apollo</a> <a href="/tags/call-log/" style="font-size: 10px;">call-log</a> <a href="/tags/conflict/" style="font-size: 10px;">conflict</a> <a href="/tags/customize/" style="font-size: 10px;">customize</a> <a href="/tags/factory/" style="font-size: 10px;">factory</a> <a href="/tags/fast-forword/" style="font-size: 10px;">fast-forword</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graphql/" style="font-size: 10px;">graphql</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/iflytek/" style="font-size: 10px;">iflytek</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mySql/" style="font-size: 10px;">mySql</a> <a href="/tags/newcoder/" style="font-size: 10px;">newcoder</a> <a href="/tags/observer/" style="font-size: 10px;">observer</a> <a href="/tags/pattern/" style="font-size: 13.33px;">pattern</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/scroll/" style="font-size: 10px;">scroll</a> <a href="/tags/scrollview/" style="font-size: 10px;">scrollview</a> <a href="/tags/solid/" style="font-size: 10px;">solid</a> <a href="/tags/zentao/" style="font-size: 10px;">zentao</a> <a href="/tags/%E6%9E%81%E5%AE%A2/" style="font-size: 10px;">极客</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/28/using-with-nested-fragment-in-graphql/">using-with-nested-fragment-in-graphql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/geek-towards-ultimate/">极客：构建和谐社会？</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/03/talk-about-dream/">谈谈梦想吧</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/19/practise-in-mvp/">我的 MVP 帝国发展史</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/10/input-filter-size-and-type/">让 Android 输入框只能输入固定长度的中英文</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AlphaGao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

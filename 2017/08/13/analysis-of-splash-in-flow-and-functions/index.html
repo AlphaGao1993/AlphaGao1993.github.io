@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Splash 闪屏页流程与功能分析 | Here&#39;s to Change</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="0. 闪屏流程分析要说到闪屏，几乎已经是所有 App 的标配了。但是各家对于闪屏的理解和应用方式各不相同。比如 Google 自己并不建议在闪屏页中设置过长的停留时间，而只是作为冷启动过程的一种变相缓冲，以就是仅在背景上设置一个 APP Logo 来避免屏幕留白。但在中国，几乎所有的流量还不错的 App 都会在闪屏页中加入广告，或者自己应用中某个主题活动的宣传，在增强品牌效应。这其中又有不同的使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Splash 闪屏页流程与功能分析">
+<meta property="og:url" content="alphagao.com/2017/08/13/analysis-of-splash-in-flow-and-functions/index.html">
+<meta property="og:site_name" content="Here&#39;s to Change">
+<meta property="og:description" content="0. 闪屏流程分析要说到闪屏，几乎已经是所有 App 的标配了。但是各家对于闪屏的理解和应用方式各不相同。比如 Google 自己并不建议在闪屏页中设置过长的停留时间，而只是作为冷启动过程的一种变相缓冲，以就是仅在背景上设置一个 APP Logo 来避免屏幕留白。但在中国，几乎所有的流量还不错的 App 都会在闪屏页中加入广告，或者自己应用中某个主题活动的宣传，在增强品牌效应。这其中又有不同的使用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://oa3wvfmvl.bkt.clouddn.com/slpash_flow.png">
+<meta property="article:published_time" content="2017-08-13T04:14:53.000Z">
+<meta property="article:modified_time" content="2020-01-11T07:12:36.798Z">
+<meta property="article:author" content="AlphaGao">
+<meta property="article:tag" content="Splash">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oa3wvfmvl.bkt.clouddn.com/slpash_flow.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Here&#39;s to Change" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Here&#39;s to Change</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">请问你真的有在努力吗 ？</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="alphagao.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-analysis-of-splash-in-flow-and-functions" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/13/analysis-of-splash-in-flow-and-functions/" class="article-date">
+  <time datetime="2017-08-13T04:14:53.000Z" itemprop="datePublished">2017-08-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Splash 闪屏页流程与功能分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="0-闪屏流程分析"><a href="#0-闪屏流程分析" class="headerlink" title="0. 闪屏流程分析"></a>0. 闪屏流程分析</h3><p>要说到闪屏，几乎已经是所有 App 的标配了。但是各家对于闪屏的理解和应用方式各不相同。比如 Google 自己并不建议在闪屏页中设置过长的停留时间，而只是作为冷启动过程的一种变相缓冲，以就是仅在背景上设置一个 APP Logo 来避免屏幕留白。但在中国，几乎所有的流量还不错的 App 都会在闪屏页中加入广告，或者自己应用中某个主题活动的宣传，在增强品牌效应。这其中又有不同的使用流派，但基本都可以归为一个流程：</p>
+<a id="more"></a>
+<p><img src="https://oa3wvfmvl.bkt.clouddn.com/slpash_flow.png" alt=""></p>
+<p>部分 App 会直接省略 Logo 这一环，直接加载闪屏页。观察了几个常用 App 后，我发现<strong>网易云音乐的闪屏逻辑是最好的</strong>，这不是说网易云音乐的闪屏流程与上面的图片有什么不同，而是网易优化了冷启动过程。一般来说，App 在点击 back 退出以后，再次打开会重新进入冷启动流程，也就是会再次进入闪屏显示流程，但是网易云音乐就不会：它只会在你第一次打开该 App 的时候加载 Loge 和 Splash，然后即使你按了 back 退出到屏幕，再次打开就不会再走闪屏流程了。这样即使用户多次退出打开也只会显示一次 Splash 页面，那么就算网易云的 Splash 时间稍微长一点你也不会在乎的吧（斜眼笑）。</p>
+<h3 id="1-闪屏流程优化"><a href="#1-闪屏流程优化" class="headerlink" title="1. 闪屏流程优化"></a>1. 闪屏流程优化</h3><p>那么这种模式是如何实现的呢？开始我以为是因为是通过检测后台服务是否运行栏判断是否跳过 splash 逻辑，但是我实际实验后发现，这个方法虽然可行，但是在此打开时的页面动画就不是那么舒服了，有点生硬的感觉，而且不是所有的 App 都有后台服务的。不管简单的搜索就找到了我觉得正确的方式：</p>
+<p>Activity 类中有一个方法：<code>moveTaskToBack</code>，接受一个 boolean 类型参数，传入 true 就会让 App 退出进入后台，但是不会停止该进程。这不就是我们想要的方式么？试了下果然跟网易云一毛一样，这样也是变相的避免了 App 冷启动，减少了用户的等待时间，提升了那么一点用户体验吧。</p>
+<p>除了这个方法还有另一种办法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_MAIN);</span><br><span class="line">intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">intent.addCategory(Intent.CATEGORY_HOME);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p>效果与 <code>moveTaskToBack</code> 是相同的。</p>
+<p>但是这两个方法都有一个共同的弊端，如果 App 处于后台超过一定时间没有任务执行也会被杀死的。而且这个时间非常短。我在自己手机上测试是 7 秒左右。不过这大概是因为我手机打开了某些清理工具的原因，毕竟写在 <code>onDestroy</code> 里的 log 都没打出来，可见是被强制杀死的。所以我又在虚拟机上测试了下，点击返回以后等了三分钟发现还是处于存活状态我就没有继续测试了，基本已经证明如果没有第三方干涉，应用应该会在后台存活较长时间，直到内存不足被系统杀死。当然作为一个有尊严的 App 应该在用户退出后开个定时器，十分钟用户还没有回来就自毁吧，毕竟占着内存不工作也不太好是吧。</p>
+<p>不过相比于很多 App 用 <code>再按一次返回退出</code> 来挽留用户，我觉得这种方式可能更加舒服一点。</p>
+<h3 id="2-闪屏页需求分析"><a href="#2-闪屏页需求分析" class="headerlink" title="2. 闪屏页需求分析"></a>2. 闪屏页需求分析</h3><p>首先要说的是，我这里所说的闪屏页并不包括<code>引导页</code>，这相对是另一个功能了。一般对闪屏而言，无外乎就这么几个功能：</p>
+<ul>
+<li>显示 Logo，增强品牌效应</li>
+<li>打广告，挣点零花钱</li>
+<li>内部活动推广，会带有内链</li>
+</ul>
+<h4 id="2-1-显示-Logo"><a href="#2-1-显示-Logo" class="headerlink" title="2.1 显示 Logo"></a>2.1 显示 Logo</h4><p>首先说显示 Logo，如果 App 的 Logo 与开始的图片上的流程是一样的，那么 Logo 是可以有两种方式来显示的。</p>
+<ol>
+<li><p>通过 windowBackground 来设置：可以在屏幕背景里放一个非全屏显示的图片，作为打开的留白的间隙的替代，当正常内容加载完就会被覆盖掉。Logo 的显示时间取决于正常内容的加载时间，如果加载很快，Logo 就会一闪而过。但为什么是非全屏显示呢，对于 windowBackgroung，很难设置图片的拉伸模式，那么屏幕适配就非常麻烦。所以放一个非全屏图片，设置个背景色或许是个不错的选择。这种方式也是 Google Photos 在用的。至于一闪而过对于用户的体验是否良好就仁者见仁了。另外值得一提的是网易云应该也是使用这种方式，因为 Logo 的显示时间并不总是相同而且没有丝毫的留白间隙，但是它的 Logo 是全屏的，这就得佩服下网易的技术水平了（微笑脸）。</p>
+</li>
+<li><p>除了这种方式就是常规的用一个单独的页面来显示 Logo 了，这种没什么好说的，全屏往里面放图片就行了。</p>
+</li>
+</ol>
+<h4 id="2-2-显示广告"><a href="#2-2-显示广告" class="headerlink" title="2.2 显示广告"></a>2.2 显示广告</h4><p>然后说打广告，这里的广告是指接的外部广告，比如网易的闪屏经常会放某某车的广告，或者天猫什么节的，还是有很酷炫的动画和声音的那种，简单的图片动态加载比较简单，但是带有多媒体效果的广告就略复杂了，这里就只说动态下拉图片广告吧。</p>
+<p>动态下拉图片广告需要后台 API 的配合。比如检测是不是要下载新的广告，广告的过期时间，紧急停用某个广告等。因为我不是后台，所以自己写了个简单的后台广告接口，勉强够用：</p>
+<ul>
+<li>请求<ul>
+<li>地址：</li>
+<li>方法：GET</li>
+<li>格式：&lt;K,V&gt;</li>
+<li>参数：<ul>
+<li>Long : splashId               //当前 splash id，为空则返回最新 splash 信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>返回<ul>
+<li>数据：闪屏信息</li>
+<li>格式：json</li>
+<li>例子：  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"splash"</span>:</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">"id"</span>:<span class="number">1</span>,                 <span class="comment">//闪屏识别 id</span></span><br><span class="line">        <span class="attr">"imgUrl"</span>:<span class="string">""</span>,            <span class="comment">//闪屏图片下载地址</span></span><br><span class="line">        <span class="attr">"eventUrl"</span>:<span class="string">""</span>,          <span class="comment">//闪屏活动地址</span></span><br><span class="line">        <span class="attr">"eventTitle"</span>:<span class="string">""</span>,        <span class="comment">//闪屏活动标题</span></span><br><span class="line">        <span class="attr">"deadDate"</span>:<span class="number">0</span>,           <span class="comment">//有效期至（Long 毫秒值）</span></span><br><span class="line">        <span class="attr">"disable"</span>:<span class="literal">true</span>          <span class="comment">//是否停用，用于紧急下线闪屏</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>服务器行为：</li>
+</ul>
+<ul>
+<li>根据 id 检查是否存在新的 splash 信息，存在则返回 splash 对象，不存在返回空，停用该 splash 则返回 id 相同、 disable=true 的 splash 对象</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>如果 App 某段时间内只维持一个 Splash，也就是显示同一个广告，那么对象信息可以存在 SP 里，如果要维持多个 Splash，那还是单独建个数据表来存储比较方便。我这个接口只适合维持一个 Splash，因此也不存在考虑显示频次的问题，如果要适配多 Splash 的需求，我想你们肯定能做到的（斜眼笑）。</p>
+<p>对移动端来说，每次打开 App 都要请求该接口，以保证 Splash 的最新。当发送 id 与接收到的 id 不同，那么就要开启子线程与下载新的 Splash 图片了。如果相同，但 disable=true，下次冷启动就不会再显示这个 Splash 了。</p>
+<h4 id="2-3-显示活动推广"><a href="#2-3-显示活动推广" class="headerlink" title="2.3 显示活动推广"></a>2.3 显示活动推广</h4><p>本来我以为只有 App 自己的活动推广才会带有内链，不过网易显然又刷新了我的认知，它竟然在网易云里面加载天猫某某节的页面！不愧是网易，果然有态度。其实看上一小节的 API 文档，就知道 Splash 里还带有两个 url 属性的，imgUrl 是广告图片的下载地址，eventUrl 是活动页面地址，至于 eventTitle 就是活动页面的标题了。</p>
+<p>这个其实只要给 Splash 图片设置个点击事件就行了，不过有一点还是要说下：点击图片进入了活动页面，如果 Splash 页面已经 finish 掉了，那么 App 不是就直接退出了么，如果推广是给别家推广的，有种给别人做了嫁衣裳的感觉啊。因此，对于活动页面的退出，还得加一层判断逻辑。考虑到内链不仅会是 web 页面，也可能是内部的某个常规 Activity，因此需要在所有可能由 Splash 跳转而来的页面里进行判断：</p>
+<p>首先在开启 Activity 的传入参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">actionStart</span><span class="params">(Context context, String url, String title, <span class="keyword">boolean</span> isFromSplash)</span> </span>&#123;</span><br><span class="line">    Intent intent = <span class="keyword">new</span> Intent(context, CommonWebActivity<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    intent.putExtra(<span class="string">"url"</span>, url);</span><br><span class="line">    intent.putExtra(<span class="string">"title"</span>, title);</span><br><span class="line">    intent.putExtra(<span class="string">"isFromSplash"</span>, isFromSplash);</span><br><span class="line">    context.startActivity(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在需要做退出判断的地方：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBackPressed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (webView.canGoBack()) &#123;<span class="comment">//优先让内置浏览器返回至上一页</span></span><br><span class="line">        webView.goBack();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFromSplash) &#123;<span class="comment">//如果从闪屏跳转而来，则关闭返回至首页</span></span><br><span class="line">        MainActivity.actionStart(<span class="keyword">this</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onBackPressed();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你有抽取 BaseActivity，那么在 BaseActivty 中判断更好：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBackPressed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isFromSplash) &#123;<span class="comment">//如果从闪屏跳转而来，则关闭返回至首页</span></span><br><span class="line">        MainActivity.actionStart(<span class="keyword">this</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onBackPressed();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，闪屏的分析就结束了，一般来说 Splash 页面就这么些功能了，这里我没有贴上完整的实现代码，因为测试 API 是用 SpringBoot 建的，而且大家的后台并不一定是自己可以控制的，因此主要还是提供个思路，具体的实现方式还是要因公司（需求）而异。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="alphagao.com/2017/08/13/analysis-of-splash-in-flow-and-functions/" data-id="ck5997sjb004yozp0bt2g4ybc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Splash/" rel="tag">Splash</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/02/some-gain-in-two-weeks-in-beginning/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          入职两周后
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/07/stragety-pattern-vs-state-pattern/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">策略模式 vs 状态模式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GraphQl/">GraphQl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pattern/">Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Water/">Water</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AC/" rel="tag">AC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/" rel="tag">Apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVM/" rel="tag">CVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/" rel="tag">Cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Campus/" rel="tag">Campus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Carousel/" rel="tag">Carousel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Click/" rel="tag">Click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Contacts/" rel="tag">Contacts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/" rel="tag">Customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decor/" rel="tag">Decor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Download/" rel="tag">Download</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Encapsulation/" rel="tag">Encapsulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Essay/" rel="tag">Essay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GTD/" rel="tag">GTD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gesture/" rel="tag">Gesture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Glide/" rel="tag">Glide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrqphQL/" rel="tag">GrqphQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Handler/" rel="tag">Handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IDEA/" rel="tag">IDEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InputFilter/" rel="tag">InputFilter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Intent/" rel="tag">Intent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LaunchMode/" rel="tag">LaunchMode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leak/" rel="tag">Leak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LetterIndexView/" rel="tag">LetterIndexView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ListView/" rel="tag">ListView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Location/" rel="tag">Location</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Looper/" rel="tag">Looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/" rel="tag">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Map/" rel="tag">Map</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Message/" rel="tag">Message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Model/" rel="tag">Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netease/" rel="tag">Netease</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OOP/" rel="tag">OOP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Partial/" rel="tag">Partial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pattern/" rel="tag">Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PhoneWindow/" rel="tag">PhoneWindow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Presenter/" rel="tag">Presenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Provider/" rel="tag">Provider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/" rel="tag">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Runnable/" rel="tag">Runnable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SOCKET/" rel="tag">SOCKET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scouce/" rel="tag">Scouce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service/" rel="tag">Service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shortcut/" rel="tag">Shortcut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Soft/" rel="tag">Soft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Speech/" rel="tag">Speech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Splash/" rel="tag">Splash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State/" rel="tag">State</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stragety/" rel="tag">Stragety</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Summary/" rel="tag">Summary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sync/" rel="tag">Sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toast/" rel="tag">Toast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ToggleButton/" rel="tag">ToggleButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/" rel="tag">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/View/" rel="tag">View</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager/" rel="tag">ViewPager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager%EF%BC%8CJob/" rel="tag">ViewPager，Job</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo/" rel="tag">apollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/call-log/" rel="tag">call-log</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conflict/" rel="tag">conflict</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/customize/" rel="tag">customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/factory/" rel="tag">factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fast-forword/" rel="tag">fast-forword</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/" rel="tag">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphql/" rel="tag">graphql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/" rel="tag">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iflytek/" rel="tag">iflytek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/" rel="tag">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mySql/" rel="tag">mySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/newcoder/" rel="tag">newcoder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/observer/" rel="tag">observer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/" rel="tag">pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroll/" rel="tag">scroll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrollview/" rel="tag">scrollview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solid/" rel="tag">solid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentao/" rel="tag">zentao</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%AE%A2/" rel="tag">极客</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AC/" style="font-size: 13.33px;">AC</a> <a href="/tags/Activity/" style="font-size: 16.67px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/CVM/" style="font-size: 10px;">CVM</a> <a href="/tags/Cache/" style="font-size: 10px;">Cache</a> <a href="/tags/Campus/" style="font-size: 10px;">Campus</a> <a href="/tags/Carousel/" style="font-size: 10px;">Carousel</a> <a href="/tags/Click/" style="font-size: 10px;">Click</a> <a href="/tags/Contacts/" style="font-size: 10px;">Contacts</a> <a href="/tags/Customize/" style="font-size: 10px;">Customize</a> <a href="/tags/Decor/" style="font-size: 10px;">Decor</a> <a href="/tags/Download/" style="font-size: 10px;">Download</a> <a href="/tags/Encapsulation/" style="font-size: 10px;">Encapsulation</a> <a href="/tags/Essay/" style="font-size: 10px;">Essay</a> <a href="/tags/GTD/" style="font-size: 10px;">GTD</a> <a href="/tags/Gesture/" style="font-size: 10px;">Gesture</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Glide/" style="font-size: 10px;">Glide</a> <a href="/tags/GrqphQL/" style="font-size: 13.33px;">GrqphQL</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Handler/" style="font-size: 13.33px;">Handler</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/InputFilter/" style="font-size: 10px;">InputFilter</a> <a href="/tags/Intent/" style="font-size: 10px;">Intent</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/LaunchMode/" style="font-size: 10px;">LaunchMode</a> <a href="/tags/Leak/" style="font-size: 10px;">Leak</a> <a href="/tags/LetterIndexView/" style="font-size: 10px;">LetterIndexView</a> <a href="/tags/ListView/" style="font-size: 13.33px;">ListView</a> <a href="/tags/Location/" style="font-size: 10px;">Location</a> <a href="/tags/Looper/" style="font-size: 10px;">Looper</a> <a href="/tags/MVP/" style="font-size: 10px;">MVP</a> <a href="/tags/Map/" style="font-size: 10px;">Map</a> <a href="/tags/Message/" style="font-size: 10px;">Message</a> <a href="/tags/Model/" style="font-size: 10px;">Model</a> <a href="/tags/Netease/" style="font-size: 10px;">Netease</a> <a href="/tags/OOP/" style="font-size: 10px;">OOP</a> <a href="/tags/Partial/" style="font-size: 10px;">Partial</a> <a href="/tags/Pattern/" style="font-size: 10px;">Pattern</a> <a href="/tags/PhoneWindow/" style="font-size: 10px;">PhoneWindow</a> <a href="/tags/Presenter/" style="font-size: 10px;">Presenter</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/REST/" style="font-size: 13.33px;">REST</a> <a href="/tags/RecyclerView/" style="font-size: 10px;">RecyclerView</a> <a href="/tags/Runnable/" style="font-size: 10px;">Runnable</a> <a href="/tags/SOCKET/" style="font-size: 10px;">SOCKET</a> <a href="/tags/Scouce/" style="font-size: 10px;">Scouce</a> <a href="/tags/Service/" style="font-size: 13.33px;">Service</a> <a href="/tags/Shortcut/" style="font-size: 10px;">Shortcut</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/Soft/" style="font-size: 10px;">Soft</a> <a href="/tags/Speech/" style="font-size: 10px;">Speech</a> <a href="/tags/Splash/" style="font-size: 10px;">Splash</a> <a href="/tags/State/" style="font-size: 10px;">State</a> <a href="/tags/Stragety/" style="font-size: 10px;">Stragety</a> <a href="/tags/Summary/" style="font-size: 10px;">Summary</a> <a href="/tags/Sync/" style="font-size: 10px;">Sync</a> <a href="/tags/Thread/" style="font-size: 16.67px;">Thread</a> <a href="/tags/Toast/" style="font-size: 10px;">Toast</a> <a href="/tags/ToggleButton/" style="font-size: 10px;">ToggleButton</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Ubuntu/" style="font-size: 13.33px;">Ubuntu</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/ViewPager/" style="font-size: 10px;">ViewPager</a> <a href="/tags/ViewPager%EF%BC%8CJob/" style="font-size: 10px;">ViewPager，Job</a> <a href="/tags/apollo/" style="font-size: 10px;">apollo</a> <a href="/tags/call-log/" style="font-size: 10px;">call-log</a> <a href="/tags/conflict/" style="font-size: 10px;">conflict</a> <a href="/tags/customize/" style="font-size: 10px;">customize</a> <a href="/tags/factory/" style="font-size: 10px;">factory</a> <a href="/tags/fast-forword/" style="font-size: 10px;">fast-forword</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graphql/" style="font-size: 10px;">graphql</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/iflytek/" style="font-size: 10px;">iflytek</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mySql/" style="font-size: 10px;">mySql</a> <a href="/tags/newcoder/" style="font-size: 10px;">newcoder</a> <a href="/tags/observer/" style="font-size: 10px;">observer</a> <a href="/tags/pattern/" style="font-size: 13.33px;">pattern</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/scroll/" style="font-size: 10px;">scroll</a> <a href="/tags/scrollview/" style="font-size: 10px;">scrollview</a> <a href="/tags/solid/" style="font-size: 10px;">solid</a> <a href="/tags/zentao/" style="font-size: 10px;">zentao</a> <a href="/tags/%E6%9E%81%E5%AE%A2/" style="font-size: 10px;">极客</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/28/using-with-nested-fragment-in-graphql/">using-with-nested-fragment-in-graphql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/geek-towards-ultimate/">极客：构建和谐社会？</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/03/talk-about-dream/">谈谈梦想吧</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/19/practise-in-mvp/">我的 MVP 帝国发展史</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/10/input-filter-size-and-type/">让 Android 输入框只能输入固定长度的中英文</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AlphaGao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>面向接口编程 | Here&#39;s to Change</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="其实我大二的时候开始，我就已经在不断地听说面向对象编程，这个词语不断地出现在我的眼前，并且在过去的几年里我也学习了 c# 这门同是面向对象的编程语言，可惜那个时候我还并没有将所有的心思放在对编程的研究中（惭愧）。这就导致我虽然身处在面向对象的世界中却不自知。知道升到本科，真正意识到自己要做一名软件开发人员，我才开始逐渐去了解面向对象编程这个思想。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向接口编程">
+<meta property="og:url" content="alphagao.com/2016/12/05/interface-oriented-programming/index.html">
+<meta property="og:site_name" content="Here&#39;s to Change">
+<meta property="og:description" content="其实我大二的时候开始，我就已经在不断地听说面向对象编程，这个词语不断地出现在我的眼前，并且在过去的几年里我也学习了 c# 这门同是面向对象的编程语言，可惜那个时候我还并没有将所有的心思放在对编程的研究中（惭愧）。这就导致我虽然身处在面向对象的世界中却不自知。知道升到本科，真正意识到自己要做一名软件开发人员，我才开始逐渐去了解面向对象编程这个思想。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-12-05T10:46:00.000Z">
+<meta property="article:modified_time" content="2020-01-11T07:12:36.801Z">
+<meta property="article:author" content="AlphaGao">
+<meta property="article:tag" content="interface">
+<meta property="article:tag" content="OOP">
+<meta property="article:tag" content="solid">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Here&#39;s to Change" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Here&#39;s to Change</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">请问你真的有在努力吗 ？</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="alphagao.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-interface-oriented-programming" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/05/interface-oriented-programming/" class="article-date">
+  <time datetime="2016-12-05T10:46:00.000Z" itemprop="datePublished">2016-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Pattern/">Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      面向接口编程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>其实我大二的时候开始，我就已经在不断地听说面向对象编程，这个词语不断地出现在我的眼前，并且在过去的几年里我也学习了 c# 这门同是面向对象的编程语言，可惜那个时候我还并没有将所有的心思放在对编程的研究中（惭愧）。这就导致我虽然身处在面向对象的世界中却不自知。知道升到本科，真正意识到自己要做一名软件开发人员，我才开始逐渐去了解面向对象编程这个思想。</p>
+<a id="more"></a>
+<p>在以主动的姿态踏入面向对象编程的世界中以后，我开始对这个世界有了极大的兴趣，它似乎是现实世界在在程序代码中的映射，所有现实世界的一些规则，基本都可以在面向对象的思想中找到同样的设计思想，这简直就太厉害了。过去为什么会觉得写代码是一件非常枯燥的事情，就是因为看不懂。可为什么看不懂呢，我觉得就是不熟悉是一方面，可最重要的是它（面向过程的语言）的语言结构让我们觉得非常困惑。绝大多数人的大脑思维都是基于已知的，被人们广泛知晓并且被认证过得事实来进行思考。而面向过程的语言虽然看起来样子很像是某些真实事物的反映，可仔细观察，它的（语言）行为模式和现实世界是大相径庭的，也就是只是形似而不神似。所以我们虽然看着都认识，却完全不理解它想要做什么，或者表达了什么。</p>
+<p>到了面向对象编程的语言中，我们很容易就能看得懂这段代码的意图，甚至不怎么了解编程的人也能根据关键字和字面意思猜个七七八八，这不仅仅因为我们知道这些关键字的意思，同时可以体会到语言的意图，或者可以说，这些代码自己在说话，不仅仅是语法上跟接近真是语言，语义上也更加简洁易懂，语句之间的衔接关系也要更加紧密，真是如此，我们在编写面向对象的代码的时候，丝毫没有之前的迟滞感，因为写代码跟自己平常说话已经没有了太大区别，这个时候你还会觉得写代码很难么。</p>
+<p>扯了这么多，我今天主要想说的还是面向接口编程这一块。这个词对于我来说还算是比较陌生的，也是以前隐约听别人提起过，但并不是太过在意。知道我这两天在学习一个课程的时候，听到了老师略微提了几次，并且有了一个相关的案例，然后我就被震撼到了。感觉自己好像发现了新大陆，从来都不知道之前被自己随随便便写的接口还有这种使用方式，不，这更是一种设计思想，真正的面向对象的设计思想。</p>
+<p>没有依据的嘶吼是很苍白的，我简单说明一下这个案例：</p>
+<p>这是一个功能模块，需要实现数据分页的功能，目前可供参考的方法有三种：使用 List 对象的 sublist 方法来来实现、使用数据库查询语句来实现，以及使用 hibernate 框架的分页功能来实现。按照以前的我，我会怎么做呢。</p>
+<p>我会首先定义出数据库数据对应的实体类，也就是 MVC 架构的 M 层，然后对 M 层设计对应的 dao 接口，接着针对每个 M 来编写实现了 dao 接口的 Impl 类，然后在控制层调用 Impl 类来查询出每个分页需要的数据，最终就可以将数据显示到 View 层。</p>
+<p>你觉得我这样做怎么样呢，当时的我觉得这就是最标准的实现思路了，甚至我以为这个老师也会用跟我类似的想法来实现，直到我看过了这个课程。如果你一开始的想法跟我一样，那么你也跟我一样，对面向对象编程的认识还太浅显，接着往下看吧。</p>
+<p>在这个课程里，这位老师首先也是在 model 包中定义出了数据库要查询的数据实体类，例如要查询学生信息，那么就定义出学生的一个实例，用来映射数据的数据，这一点跟我之前的思路是一致的，但是接下来老师又定义了一个 Pager 类，用来存放查询出的分页数据，这一点我就没有想到。在我只是稍微有点惭愧的情况下，老师又开始打脸了。在定义了 Pager 类的基础上，老师又给这个类加上了泛型！天哪原谅我还没接触过泛型，对这个举动直接就是一脸懵逼的。好在也是基于面向对象的思想，还是比较好懂的，老师随便一讲解就明白其中的用法。在这个 Pager<T> 类中，包含一个 List<T>,totalPage,pageSize,currentPage,totalRecord,就已经将所有分页可能用到的信息定义了出来。这个时候我就已经开始佩服这位老师，不管后面是如何实现的，这里泛型的运用就不是我能比的。紧接着老师又在这个包内定义了 StudentDao 接口，其中就只有查询学生分页信息的这么一个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Pager&lt;Student&gt; <span class="title">findStudent</span><span class="params">(Student searchModel, <span class="keyword">int</span> pageNum, <span class="keyword">int</span> pageSize)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>我想大概是因为这里已经是涉及到具体的查询学生信息的方法的，所以 Pager 的泛型已经具体到了 Student 这个实体类。有了这个接口，就可以用不同的方式实现分页信息的查询。其实排除这里泛型的运用，以及查询的具体实现，我们思路也是差不多的嘛（勿喷。。）。然而接下来老师的行为就让我彻底不解了。老师在这里又在 Service 包中定义了一个接口 <code>StudentService</code> ，并且在其中定义了一个与之前 StudentDao 接口完全相同的方法 findStudent 。不是已经定义了一个查询学生信息的接口么，接下来只要再写一个实现 StudentDao 接口的类来实现具体的查询逻辑不就行了么。然后老师的行为有恢复了我认知上的正常，定义了使用 sublist 方法并且实现了 StudentDao 接口的类 SublistStudentDaoImpl ,在这个类中实现了用 List 的 sublist 方法进行分页信息的查询；具体的代码实现我就不提了，并不是要研究的重点，不过有一点我想要说明一下。老师给 Student 这个实体类又添加了一个构造方法 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(Map&lt;String, Object&gt; map)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.id =(Integer) map.get(<span class="string">"id"</span>);</span><br><span class="line">    <span class="keyword">this</span>.stuName =(String) map.get(<span class="string">"stu_name"</span>);</span><br><span class="line">    <span class="keyword">this</span>.age =(Integer) map.get(<span class="string">"age"</span>);</span><br><span class="line">    <span class="keyword">this</span>.gender =(Integer) map.get(<span class="string">"gender"</span>);</span><br><span class="line">    <span class="keyword">this</span>.address =(String) map.get(<span class="string">"address"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过传入一个 map 来构造一个 Student 实例，map 中存放的是从数据库里查询出来的字段名与字段值，之所以这么设计是因为数据库层返回的就是 List&lt;Map&lt;K,V&gt;&gt; 类型。这样就能极大程度的简化 Student 构造的过程，并且代码看起来也会很清晰。</p>
+<p>在这之后，老师又在 Service 包中新建了一个实现了 StudentService 接口的类 SublistStudentServiceImpl ，在这个类所做的事情就让我稍微明白了为何要再多加一个 StudentService 接口的原因。这个类里定义了一个 StudentDao 接口，又在这个类的构造方法中实例化了一个 SublistStudentDaoImpl 类，是的，实例化了一个 SublistStudentDaoImpl 类，因为这个类实现了 StudentDao 接口，所以完全是可以以 StudentDao 接口来实例化的。这种方式也是我之前不曾使用过的，果然对于面向对象思想我还有很长的路要走。由于这个类实现了 StudentService 接口，就可以在 findStudent 方法中，调用被实例化 的 StudentDao 接口的 findStudent 方法，实际上就是 SublistStudentDaoImpl 类中的 findStudent 方法。</p>
+<p>在往下就是在控制层拿到数据再设置到视图层了。经过上面这么一折腾，我很自然地猜到，应该会在视图层中定义一个 StudentService 接口，然后借此实例化一个 SublistStudentServiceImpl 类，通过这个类就能切实的拿到查询出来的数据集。果然老师也是这么做的，从方法定义来看，最终拿到的是一个 Pager 对象，这里的控制层就是 Servlet ，所以将这个 Pager 对象放入到 request 中即可。如此第一种方式实现分页查询就完全搞定了。</p>
+<p>到这里我还是不能完全理解老师的想法，因为两个接口的功能确实是重复了的，直接在控制层通过 StudentDao 接口实例化 SublistStudentDaoImpl 类的结果完全是一致的，还省去了中间的数据流动。</p>
+<p>其实这里就涉及到更深的分层思想和 solid 面向对象五大原则了。因为我这里的业务场景非常简单，就算是 findStudent 这个方法，也只是根据 student 的 name 和 gender 两个属性来查询，查询的也只是学生的实体信息，并没有涉及到复杂查询，比如多表联合查询等。如果没有 Service 这一层作为中间的过渡，那么当你想要增加其他查询功能的时候，就会非常麻烦。因为我这里的 Service 中的逻辑非常简单，就只是返回查询结果这一行代码，所以看起来 Service 的存在并没有什么意义，好像在什么地方调用 studentDao 都是可以的。然而在正式的生产场景中是不太可能会一行代码就搞定的，那么针对未来的功能模块的添加，需要预留足够良好的层次设计。</p>
+<p>假如我现在有很多查询方法，每个方法的底层实现都不相同，那么就可以让新的功能类区实现 studentDao 接口，再新建合适的类去实现 StudentService 接口，在其中通过 studentDao 接口去引用前面的实现类。这样的好处就是可以实现模块分离，或者说可以 <strong>解耦</strong>。如果从宏观来看，不设置 Service  层，没有 Service 接口来做中专，那么控制层就会直接接触到数据库层，但是按照 solid 中的 d（DIP，依赖注入或倒置） 原则，<strong>高层模块不应依赖于低层模块，二者都应该依赖于抽象</strong> ，回想一下，dao 包和 service 包里都定义了接口，而其对应的实现类也都在这个包内，包内的接口就是这个包中实现类的抽象，而其上层也正是通过 这两个层的接口来调用具体的逻辑，这就是高层逻辑与底层逻辑之间没有直接的耦合关系，而是通过抽象的接口来调用，并且这两个实现类的核心逻辑都是根据接口的定义来完成的，也就是实现依赖于抽象，最后抽象和接口就使模块之间的依赖分离。solid原则可以参考![1]。</p>
+<p>不知不觉就写了这么多，却感觉还是没有完全能说清楚，除了 solid 五原则，面向对象还有其他的原则，但这些原则不是一朝一夕就可以理解透彻的，随着编码经验的增加和知识的积累，慢慢地领悟这些原则，并逐渐将其运用到实际的代码中，你的代码质量也就会越来越高。</p>
+<p>参考<a href="http://www.cnblogs.com/lanxuezaipiao/archive/2013/06/09/3128665.html" target="_blank" rel="noopener">solid 原则</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="alphagao.com/2016/12/05/interface-oriented-programming/" data-id="ck5997sjk0057ozp09zeggnym" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OOP/" rel="tag">OOP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/solid/" rel="tag">solid</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/10/use-runnable-correctly/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          正确认识 Runnable
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/24/fix-maven-slow-in-idea/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">解决 IDEA 中 创建 maven 项目时下载缓慢的问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GraphQl/">GraphQl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pattern/">Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Water/">Water</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AC/" rel="tag">AC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/" rel="tag">Apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVM/" rel="tag">CVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/" rel="tag">Cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Campus/" rel="tag">Campus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Carousel/" rel="tag">Carousel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Click/" rel="tag">Click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Contacts/" rel="tag">Contacts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/" rel="tag">Customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decor/" rel="tag">Decor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Download/" rel="tag">Download</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Encapsulation/" rel="tag">Encapsulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Essay/" rel="tag">Essay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GTD/" rel="tag">GTD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gesture/" rel="tag">Gesture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Glide/" rel="tag">Glide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrqphQL/" rel="tag">GrqphQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Handler/" rel="tag">Handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IDEA/" rel="tag">IDEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InputFilter/" rel="tag">InputFilter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Intent/" rel="tag">Intent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LaunchMode/" rel="tag">LaunchMode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leak/" rel="tag">Leak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LetterIndexView/" rel="tag">LetterIndexView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ListView/" rel="tag">ListView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Location/" rel="tag">Location</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Looper/" rel="tag">Looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/" rel="tag">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Map/" rel="tag">Map</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Message/" rel="tag">Message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Model/" rel="tag">Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netease/" rel="tag">Netease</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OOP/" rel="tag">OOP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Partial/" rel="tag">Partial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pattern/" rel="tag">Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PhoneWindow/" rel="tag">PhoneWindow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Presenter/" rel="tag">Presenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Provider/" rel="tag">Provider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/" rel="tag">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Runnable/" rel="tag">Runnable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SOCKET/" rel="tag">SOCKET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scouce/" rel="tag">Scouce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service/" rel="tag">Service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shortcut/" rel="tag">Shortcut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Soft/" rel="tag">Soft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Speech/" rel="tag">Speech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Splash/" rel="tag">Splash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State/" rel="tag">State</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stragety/" rel="tag">Stragety</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Summary/" rel="tag">Summary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sync/" rel="tag">Sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toast/" rel="tag">Toast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ToggleButton/" rel="tag">ToggleButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/" rel="tag">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/View/" rel="tag">View</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager/" rel="tag">ViewPager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager%EF%BC%8CJob/" rel="tag">ViewPager，Job</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo/" rel="tag">apollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/call-log/" rel="tag">call-log</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conflict/" rel="tag">conflict</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/customize/" rel="tag">customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/factory/" rel="tag">factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fast-forword/" rel="tag">fast-forword</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/" rel="tag">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphql/" rel="tag">graphql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/" rel="tag">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iflytek/" rel="tag">iflytek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/" rel="tag">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mySql/" rel="tag">mySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/newcoder/" rel="tag">newcoder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/observer/" rel="tag">observer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/" rel="tag">pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroll/" rel="tag">scroll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrollview/" rel="tag">scrollview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solid/" rel="tag">solid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentao/" rel="tag">zentao</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%AE%A2/" rel="tag">极客</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AC/" style="font-size: 13.33px;">AC</a> <a href="/tags/Activity/" style="font-size: 16.67px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/CVM/" style="font-size: 10px;">CVM</a> <a href="/tags/Cache/" style="font-size: 10px;">Cache</a> <a href="/tags/Campus/" style="font-size: 10px;">Campus</a> <a href="/tags/Carousel/" style="font-size: 10px;">Carousel</a> <a href="/tags/Click/" style="font-size: 10px;">Click</a> <a href="/tags/Contacts/" style="font-size: 10px;">Contacts</a> <a href="/tags/Customize/" style="font-size: 10px;">Customize</a> <a href="/tags/Decor/" style="font-size: 10px;">Decor</a> <a href="/tags/Download/" style="font-size: 10px;">Download</a> <a href="/tags/Encapsulation/" style="font-size: 10px;">Encapsulation</a> <a href="/tags/Essay/" style="font-size: 10px;">Essay</a> <a href="/tags/GTD/" style="font-size: 10px;">GTD</a> <a href="/tags/Gesture/" style="font-size: 10px;">Gesture</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Glide/" style="font-size: 10px;">Glide</a> <a href="/tags/GrqphQL/" style="font-size: 13.33px;">GrqphQL</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Handler/" style="font-size: 13.33px;">Handler</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/InputFilter/" style="font-size: 10px;">InputFilter</a> <a href="/tags/Intent/" style="font-size: 10px;">Intent</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/LaunchMode/" style="font-size: 10px;">LaunchMode</a> <a href="/tags/Leak/" style="font-size: 10px;">Leak</a> <a href="/tags/LetterIndexView/" style="font-size: 10px;">LetterIndexView</a> <a href="/tags/ListView/" style="font-size: 13.33px;">ListView</a> <a href="/tags/Location/" style="font-size: 10px;">Location</a> <a href="/tags/Looper/" style="font-size: 10px;">Looper</a> <a href="/tags/MVP/" style="font-size: 10px;">MVP</a> <a href="/tags/Map/" style="font-size: 10px;">Map</a> <a href="/tags/Message/" style="font-size: 10px;">Message</a> <a href="/tags/Model/" style="font-size: 10px;">Model</a> <a href="/tags/Netease/" style="font-size: 10px;">Netease</a> <a href="/tags/OOP/" style="font-size: 10px;">OOP</a> <a href="/tags/Partial/" style="font-size: 10px;">Partial</a> <a href="/tags/Pattern/" style="font-size: 10px;">Pattern</a> <a href="/tags/PhoneWindow/" style="font-size: 10px;">PhoneWindow</a> <a href="/tags/Presenter/" style="font-size: 10px;">Presenter</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/REST/" style="font-size: 13.33px;">REST</a> <a href="/tags/RecyclerView/" style="font-size: 10px;">RecyclerView</a> <a href="/tags/Runnable/" style="font-size: 10px;">Runnable</a> <a href="/tags/SOCKET/" style="font-size: 10px;">SOCKET</a> <a href="/tags/Scouce/" style="font-size: 10px;">Scouce</a> <a href="/tags/Service/" style="font-size: 13.33px;">Service</a> <a href="/tags/Shortcut/" style="font-size: 10px;">Shortcut</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/Soft/" style="font-size: 10px;">Soft</a> <a href="/tags/Speech/" style="font-size: 10px;">Speech</a> <a href="/tags/Splash/" style="font-size: 10px;">Splash</a> <a href="/tags/State/" style="font-size: 10px;">State</a> <a href="/tags/Stragety/" style="font-size: 10px;">Stragety</a> <a href="/tags/Summary/" style="font-size: 10px;">Summary</a> <a href="/tags/Sync/" style="font-size: 10px;">Sync</a> <a href="/tags/Thread/" style="font-size: 16.67px;">Thread</a> <a href="/tags/Toast/" style="font-size: 10px;">Toast</a> <a href="/tags/ToggleButton/" style="font-size: 10px;">ToggleButton</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Ubuntu/" style="font-size: 13.33px;">Ubuntu</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/ViewPager/" style="font-size: 10px;">ViewPager</a> <a href="/tags/ViewPager%EF%BC%8CJob/" style="font-size: 10px;">ViewPager，Job</a> <a href="/tags/apollo/" style="font-size: 10px;">apollo</a> <a href="/tags/call-log/" style="font-size: 10px;">call-log</a> <a href="/tags/conflict/" style="font-size: 10px;">conflict</a> <a href="/tags/customize/" style="font-size: 10px;">customize</a> <a href="/tags/factory/" style="font-size: 10px;">factory</a> <a href="/tags/fast-forword/" style="font-size: 10px;">fast-forword</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graphql/" style="font-size: 10px;">graphql</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/iflytek/" style="font-size: 10px;">iflytek</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mySql/" style="font-size: 10px;">mySql</a> <a href="/tags/newcoder/" style="font-size: 10px;">newcoder</a> <a href="/tags/observer/" style="font-size: 10px;">observer</a> <a href="/tags/pattern/" style="font-size: 13.33px;">pattern</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/scroll/" style="font-size: 10px;">scroll</a> <a href="/tags/scrollview/" style="font-size: 10px;">scrollview</a> <a href="/tags/solid/" style="font-size: 10px;">solid</a> <a href="/tags/zentao/" style="font-size: 10px;">zentao</a> <a href="/tags/%E6%9E%81%E5%AE%A2/" style="font-size: 10px;">极客</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/28/using-with-nested-fragment-in-graphql/">using-with-nested-fragment-in-graphql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/geek-towards-ultimate/">极客：构建和谐社会？</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/03/talk-about-dream/">谈谈梦想吧</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/19/practise-in-mvp/">我的 MVP 帝国发展史</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/10/input-filter-size-and-type/">让 Android 输入框只能输入固定长度的中英文</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AlphaGao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

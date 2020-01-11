@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ContentProvider之读写联系人、短信、通话记录 | Here&#39;s to Change</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原理 每个应用程序的数据都是自己私有的，一般不会开放公有权限，但是当应用的使用规模较大，并衍生出其他以此为基础开发的应用，那么就需要为额外的应用开放一些权限，分享自己的一些数据供二次开发或使用。而 ContentProvider 的原理就是在自己的应用内部开放一个接口供其它应用调用，同时为了保证安全性，使用该接口需要进行安全验证。 其中接口的使用是基于 sqlite 的增删改查方法实现的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ContentProvider之读写联系人、短信、通话记录">
+<meta property="og:url" content="alphagao.com/2016/07/15/read-write-contacts-calllog/index.html">
+<meta property="og:site_name" content="Here&#39;s to Change">
+<meta property="og:description" content="原理 每个应用程序的数据都是自己私有的，一般不会开放公有权限，但是当应用的使用规模较大，并衍生出其他以此为基础开发的应用，那么就需要为额外的应用开放一些权限，分享自己的一些数据供二次开发或使用。而 ContentProvider 的原理就是在自己的应用内部开放一个接口供其它应用调用，同时为了保证安全性，使用该接口需要进行安全验证。 其中接口的使用是基于 sqlite 的增删改查方法实现的。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://oa3wvfmvl.bkt.clouddn.com/01.jpg">
+<meta property="article:published_time" content="2016-07-15T04:54:34.000Z">
+<meta property="article:modified_time" content="2020-01-11T07:12:36.803Z">
+<meta property="article:author" content="AlphaGao">
+<meta property="article:tag" content="Provider">
+<meta property="article:tag" content="message">
+<meta property="article:tag" content="call-log">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oa3wvfmvl.bkt.clouddn.com/01.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Here&#39;s to Change" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Here&#39;s to Change</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">请问你真的有在努力吗 ？</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="alphagao.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-read-write-contacts-calllog" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/15/read-write-contacts-calllog/" class="article-date">
+  <time datetime="2016-07-15T04:54:34.000Z" itemprop="datePublished">2016-07-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ContentProvider之读写联系人、短信、通话记录
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><blockquote>
+<p>每个应用程序的数据都是自己私有的，一般不会开放公有权限，但是当应用的使用规模较大，并衍生出其他以此为基础开发的应用，那么就需要为额外的应用开放一些权限，分享自己的一些数据供二次开发或使用。而 ContentProvider 的原理就是在自己的应用内部开放一个接口供其它应用调用，同时为了保证安全性，使用该接口需要进行安全验证。</p>
+<p>其中接口的使用是基于 sqlite 的增删改查方法实现的。</p>
+</blockquote>
+<a id="more"></a>
+
+<p>在使用 ContentProvider 读写数据之前，先来看如何定义一个数据开放接口，之后我们使用起来就会更加清晰有条理。</p>
+<h2 id="实现-ContentProvider-开放接口"><a href="#实现-ContentProvider-开放接口" class="headerlink" title="实现 ContentProvider 开放接口"></a>实现 ContentProvider 开放接口</h2><p>假设该应用本地已经建立一个数据库名为 <code>data.db</code>，数据库中有一张名为 <code>user</code> 的表。</p>
+<ol>
+<li><p>新建一个类<code>MyDbProvider</code>继承<code>ContentProvider</code>，该类默认实现数据库操作的四个方法，也就是增、删、改、查。同时还有两个额外的方法： <code>onCreate()</code>和<code>getType(Uri uri)</code>，前者大家都很熟悉，是该对象被创建时执行的方法，后者我们暂且不提，后面会讲到。（暂且不去实现增删改查的逻辑）</p>
+</li>
+<li><p>在清单文件中配置：<br><code>&lt;provider name=&quot;.MyDbProvider&quot; authority=&quot;com.alpha.db&quot; android:exported=&quot;true&quot;&gt;</code><br>其中<code>authority</code>里写你自己定义的主机名，一般为自己 app 的包名，但也可以自由命名，如 google 的通话记录分享者主机名为 <code>call_log</code>；<code>exported=&quot;true&quot;</code>是 Android6.0 开始必须添加的属性，代表该组件可以被外部访问。</p>
+</li>
+<li><p>新建一个静态<code>UriMatcher</code>类，用于设置接口的匹配规则。传入的参数代表匹配失败返回-1，是固定的用法。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> UriMatcher mUriMatcher = <span class="keyword">new</span> UriMatcher(UriMatcher.NO_MATCH);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加匹配规则(不必在 <code>UriMatcher</code> 类中添加)：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    uriMatcher.addURI(<span class="string">"com.alpha.db"</span>,<span class="string">"user"</span>,User_ALL);</span><br><span class="line">    uriMatcher.addURI(<span class="string">"com.alpha.db"</span>,<span class="string">"user/#"</span>,User_Single);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 第一个参数为在清单文件中定义的主机名（同时也是 uri 的前缀），第二参数为匹配规则(<code>null</code>代表匹配所有)，第三参数为自定义的匹配后返回值，必须为正整数。</p>
+<p> 例如：<br> <code>&quot;content://com.alpha.db/user&quot;</code>   表示匹配user表中所有数据   设定返回值为1<br> <code>&quot;content://com.alpha.db/user/#&quot;</code> 表示匹配user表中的某一行数据  设定返回值为2</p>
+</li>
+<li><p>实现 MyDbProvider 中的增删改查方法</p>
+<p> 具体的数据库操作逻辑这里不提；在进行数据库操纵之前，应该对得到的 Uri 进行匹配，是否与已定义的匹配类型吻合，若吻合则继续执行，否则应该抛出匹配失败的异常。</p>
+<p> 同时在前面提到的 <code>getType(Uri uri)</code> 方法里写入以下逻辑：(按需求在数据操纵方法中添加适当判断)</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> code =uriMatcher.match(uri);</span><br><span class="line"><span class="keyword">if</span> (code==User_ALL)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"vnd.android.cursor.dir/"</span>;<span class="comment">//"vnd.android.cursor.dir/"表示该路径为一个目录</span></span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span> (code==User_Single)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"vnd.android.cursor.item/user"</span>;<span class="comment">//"vnd.android.cursor.item/..."表示该路径为一个行或项</span></span><br><span class="line">&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"匹配失败"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>通过以上五步就定义好了一个 ContentProvider 开放接口，接下来就是在外部应用中使用这个接口了。</p>
+<h2 id="使用ContentProvider开放接口"><a href="#使用ContentProvider开放接口" class="headerlink" title="使用ContentProvider开放接口"></a>使用ContentProvider开放接口</h2><ol>
+<li><p>获取 ContentProvider 的解析器 ContentResolver：</p>
+<p> <code>ContentResolver resolver = getContentResolver();</code></p>
+</li>
+<li><p>设置需要操作的数据库的路径：</p>
+<p> <code>Uri uri = Uri.parse(&quot;content://com.alpha.db/user&quot;);</code></p>
+<p> 以上为获取user表的全部数据，若只需要某一行，则为(12表示行数)：</p>
+<p> <code>Uri uri = Uri.parse(&quot;content://com.alpha.db/user/12&quot;);</code></p>
+</li>
+<li><p>使用 resolver 的增删改查方法就可以对目标数据表进行操作</p>
+<p> 通过 resolver 的 <code>query()</code> 方法会返回一个 Cursor 对象，我理解为通过 sql 语句生成的游标在本地的引用，既然有了 Cursor 对象，那么 Cursor 中的数据你也是了然于胸了吧，毕竟 sql 语句可是你自己定义的。</p>
+<p> 同样，resolver 的 <code>insert()</code> 方法会返回一个 uri，表示插入数据在该表中的位置；<br>  <code>update()</code> 和 <code>delete()</code> 会返回一个 int 数据，表示操作影响了几行。</p>
+<p> 另外还可以通过 resolver 的 <code>getType()</code> 方法得到路径的类型，你可以分别对不同的路径类型执行不同的操作。</p>
+</li>
+</ol>
+<h2 id="通过-ContentProvider-读写手机联系人"><a href="#通过-ContentProvider-读写手机联系人" class="headerlink" title="通过 ContentProvider 读写手机联系人"></a>通过 ContentProvider 读写手机联系人</h2><p>首先必须知道手机联系人的 ContentProvider 的主机名，表名，如果你看过 Android 上层应用的源码，你应该知道 Android 原生应用的联系人开放主机名为“com.android.contacts”，但是表就稍有点复杂，存储联系人涉及到三张表：</p>
+<ul>
+<li><p>raw_contacts  保存联系人的 id,每一个联系人都有一个不同的id,名字叫 contact_id</p>
+</li>
+<li><p>data  保存联系人的数据,通过 raw_contact_id 来去识别这个数据属于哪个联系人</p>
+</li>
+<li><p>mimetype  保存数据的类型</p>
+</li>
+</ul>
+<h3 id="查询联系人信息的步骤"><a href="#查询联系人信息的步骤" class="headerlink" title="查询联系人信息的步骤."></a>查询联系人信息的步骤.</h3><ol>
+<li>查询 raw_contacts 表, 得到每个联系人的 contact_id.</li>
+<li>根据 contact_id 查询 data 表,把联系人的数据取出来.</li>
+<li>根据联系人数据的 mimetype,获取数据代表什么含义.</li>
+</ol>
+<p>原理明白了，下面直接上代码：（在这里我只查询 data 表中的 data1 列，和 mimetype 列）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContactsUtils</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;ContactsInfo&gt; <span class="title">getAllContactInfo</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">        ContentResolver resolver=context.getContentResolver();</span><br><span class="line">        Uri uri=Uri.parse(<span class="string">"content://com.android.contacts/raw_contacts"</span>);</span><br><span class="line">        Cursor cursor=resolver.query(uri,<span class="keyword">new</span> String[]&#123;<span class="string">"contact_id"</span>&#125;,<span class="keyword">null</span>,<span class="keyword">null</span>,<span class="keyword">null</span>);</span><br><span class="line">        List &lt;ContactsInfo&gt; contactsInfoList=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (cursor!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">while</span> (cursor.moveToNext())&#123;</span><br><span class="line">                String id=cursor.getString(<span class="number">0</span>);</span><br><span class="line">                <span class="keyword">if</span> (!TextUtils.isEmpty(id))&#123;</span><br><span class="line">                    ContactsInfo info = <span class="keyword">new</span> ContactsInfo();</span><br><span class="line">                    Uri datauri=Uri.parse(<span class="string">"content://com.android.contacts/data"</span>);</span><br><span class="line">                    Cursor dataCursor=resolver.query(datauri,<span class="keyword">new</span> String[]&#123;<span class="string">"data1"</span>,<span class="string">"mimetype"</span>&#125;</span><br><span class="line">                            ,<span class="string">"raw_contact_id=?"</span></span><br><span class="line">                            ,<span class="keyword">new</span> String[]&#123;id&#125;,<span class="keyword">null</span>);</span><br><span class="line">                    <span class="keyword">if</span> (dataCursor!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                        <span class="keyword">while</span> (dataCursor.moveToNext())&#123;</span><br><span class="line">                            String data1=dataCursor.getString(<span class="number">0</span>);</span><br><span class="line">                            String mimetype=dataCursor.getString(<span class="number">1</span>);</span><br><span class="line">                            <span class="keyword">if</span> (<span class="string">"vnd.android.cursor.item/phone_v2"</span>.equals(mimetype))&#123;</span><br><span class="line">                                info.setNumber(data1);</span><br><span class="line">                            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"vnd.android.cursor.item/email_v2"</span>.equals(mimetype))&#123;</span><br><span class="line">                                info.setEmail(data1);</span><br><span class="line">                            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"vnd.android.cursor.item/name"</span>.equals(mimetype))&#123;</span><br><span class="line">                                info.setName(data1);</span><br><span class="line">                            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"vnd.android.cursor.item/im"</span>.equals(mimetype))&#123;</span><br><span class="line">                                info.setQq(data1);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                        dataCursor.close();</span><br><span class="line">                        contactsInfoList.add(info);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            cursor.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> contactsInfoList;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>联系人实体类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContactsInfo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String number;</span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">    <span class="keyword">private</span> String qq;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getNumber</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> number;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNumber</span><span class="params">(String number)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.number = number;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getEmail</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> email;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setEmail</span><span class="params">(String email)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.email = email;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getQq</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> qq;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setQq</span><span class="params">(String qq)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.qq = qq;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"[name="</span>+name+<span class="string">",number="</span>+number+<span class="string">",email="</span>+email+<span class="string">",qq="</span>+qq+<span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后需要查询联系人就只需要一行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;ContactsInfo&gt; contactsInfoList= ContactsUtils.getAllContactInfo(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong><br>如果是 Android6.0，则最好先获得运行时权限：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//6.0需要申请运行时权限</span></span><br><span class="line">        <span class="keyword">if</span> (ContextCompat.checkSelfPermission(<span class="keyword">this</span>, android.Manifest.permission.READ_CONTACTS)</span><br><span class="line">                != PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">            ActivityCompat.requestPermissions(<span class="keyword">this</span>,</span><br><span class="line">                    <span class="keyword">new</span> String[]&#123;android.Manifest.permission.READ_CONTACTS&#125;, <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="写入联系人的步骤"><a href="#写入联系人的步骤" class="headerlink" title="写入联系人的步骤"></a>写入联系人的步骤</h3><p>因为涉及到3张表的关系，我们需要分别插入几张表，最后达到插入一个完整的联系人的目的。</p>
+<ol>
+<li>在 raw_contacts 表里面添加联系人的 id。</li>
+<li>根据这个添加的 id,在 data 表里面添加联系人的数据。</li>
+</ol>
+<p>具体代码如下：（你可以把 info 对象替换为通过用户输入获取的信息）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addContact</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    ContactsInfo info=<span class="keyword">new</span> ContactsInfo();</span><br><span class="line">    info.setName(<span class="string">"alphagao"</span>);</span><br><span class="line">    info.setEmail(<span class="string">"alphagao@github.com"</span>);</span><br><span class="line">    info.setNumber(<span class="string">"12345678910"</span>);</span><br><span class="line">    info.setQq(<span class="string">"123456789"</span>);</span><br><span class="line">    <span class="comment">//利用内容提供者添加联系人的数据到系统的数据库内部</span></span><br><span class="line">    Uri uri = Uri.parse(<span class="string">"content://com.android.contacts/raw_contacts"</span>);</span><br><span class="line">    Uri dataUri = Uri.parse(<span class="string">"content://com.android.contacts/data"</span>);</span><br><span class="line">    ContentResolver resolver = getContentResolver();</span><br><span class="line">    <span class="comment">//1. 在raw_contact表里面添加联系人的id</span></span><br><span class="line">    Cursor cursor = resolver.query(uri, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">int</span> new_id = cursor.getCount()+<span class="number">1</span>;</span><br><span class="line">    ContentValues values = <span class="keyword">new</span> ContentValues();</span><br><span class="line">    values.put(<span class="string">"contact_id"</span>, new_id);</span><br><span class="line">    resolver.insert(uri, values);</span><br><span class="line">    <span class="comment">//2. 在data表里面添加联系人的数据.</span></span><br><span class="line">    ContentValues namevalues = <span class="keyword">new</span> ContentValues();</span><br><span class="line">    namevalues.put(<span class="string">"raw_contact_id"</span>, new_id);</span><br><span class="line">    namevalues.put(<span class="string">"data1"</span>, info.getName());</span><br><span class="line">    namevalues.put(<span class="string">"mimetype"</span>, <span class="string">"vnd.android.cursor.item/name"</span>);</span><br><span class="line">    resolver.insert(dataUri, namevalues);</span><br><span class="line">    </span><br><span class="line">    ContentValues phonevalues = <span class="keyword">new</span> ContentValues();</span><br><span class="line">    phonevalues.put(<span class="string">"raw_contact_id"</span>, new_id);</span><br><span class="line">    phonevalues.put(<span class="string">"data1"</span>, info.getNumber());</span><br><span class="line">    phonevalues.put(<span class="string">"mimetype"</span>, <span class="string">"vnd.android.cursor.item/phone_v2"</span>);</span><br><span class="line">    resolver.insert(dataUri, phonevalues);</span><br><span class="line">    </span><br><span class="line">    ContentValues emailvalues = <span class="keyword">new</span> ContentValues();</span><br><span class="line">    emailvalues.put(<span class="string">"raw_contact_id"</span>, new_id);</span><br><span class="line">    emailvalues.put(<span class="string">"data1"</span>, info.getEmail());</span><br><span class="line">    emailvalues.put(<span class="string">"mimetype"</span>, <span class="string">"vnd.android.cursor.item/email_v2"</span>);</span><br><span class="line">    resolver.insert(dataUri, emailvalues);</span><br><span class="line">    </span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"添加信息成功"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如图：<br><img src="https://oa3wvfmvl.bkt.clouddn.com/01.jpg" alt="添加联系人成功示例"></p>
+<h2 id="读写通话记录和短信"><a href="#读写通话记录和短信" class="headerlink" title="读写通话记录和短信"></a>读写通话记录和短信</h2><p>其实如果你已经明白和理解读写联系人，那么通话记录就是小菜一碟，毕竟通话记录是存在一张表中的。所以这里不再放具体的读写代码，仅放出对应的路径和表名。</p>
+<ul>
+<li>通话记录 <code>URI：&quot;content://call_log/calls&quot;</code> 其中“call_log”为主机名，前文已经提过，calls为匹配规则，表示查询所有数据，关键数据列有”number”,”date”,”type”，分表表示号码、日期、呼叫类型；</li>
+<li>短信 <code>URI：&quot;content://sms/&quot;</code>这里没有匹配规则，代表查询表中所有数据，包含发送的，接受的，草稿，发送失败等等。。关键数据列有”address”,”date”,”type”,”body”,分别表示对方号码，日期，短信类型（发送，接受，草稿，发送失败），以及短信内容。</li>
+</ul>
+<blockquote>
+<p>以上读写联系人、短信、通话记录仅适用于 google 原生应用，第三方 rom 因为定制了出厂应用，内容提供者已经不再是原生的了。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="alphagao.com/2016/07/15/read-write-contacts-calllog/" data-id="ck5997sk3005qozp0ava740zf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Provider/" rel="tag">Provider</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/call-log/" rel="tag">call-log</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/message/" rel="tag">message</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/20/network-programming/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          网络编程之整体认知
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/11/http-mult-thread-download-with-breakpoint/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HTTP多线程断点下载</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GraphQl/">GraphQl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pattern/">Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Water/">Water</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AC/" rel="tag">AC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/" rel="tag">Apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVM/" rel="tag">CVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/" rel="tag">Cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Campus/" rel="tag">Campus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Carousel/" rel="tag">Carousel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Click/" rel="tag">Click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Contacts/" rel="tag">Contacts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/" rel="tag">Customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decor/" rel="tag">Decor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Download/" rel="tag">Download</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Encapsulation/" rel="tag">Encapsulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Essay/" rel="tag">Essay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GTD/" rel="tag">GTD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gesture/" rel="tag">Gesture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Glide/" rel="tag">Glide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrqphQL/" rel="tag">GrqphQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Handler/" rel="tag">Handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IDEA/" rel="tag">IDEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InputFilter/" rel="tag">InputFilter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Intent/" rel="tag">Intent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LaunchMode/" rel="tag">LaunchMode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leak/" rel="tag">Leak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LetterIndexView/" rel="tag">LetterIndexView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ListView/" rel="tag">ListView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Location/" rel="tag">Location</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Looper/" rel="tag">Looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/" rel="tag">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Map/" rel="tag">Map</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Message/" rel="tag">Message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Model/" rel="tag">Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netease/" rel="tag">Netease</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OOP/" rel="tag">OOP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Partial/" rel="tag">Partial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pattern/" rel="tag">Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PhoneWindow/" rel="tag">PhoneWindow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Presenter/" rel="tag">Presenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Provider/" rel="tag">Provider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/" rel="tag">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Runnable/" rel="tag">Runnable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SOCKET/" rel="tag">SOCKET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scouce/" rel="tag">Scouce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service/" rel="tag">Service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shortcut/" rel="tag">Shortcut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Soft/" rel="tag">Soft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Speech/" rel="tag">Speech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Splash/" rel="tag">Splash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State/" rel="tag">State</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stragety/" rel="tag">Stragety</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Summary/" rel="tag">Summary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sync/" rel="tag">Sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toast/" rel="tag">Toast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ToggleButton/" rel="tag">ToggleButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/" rel="tag">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/View/" rel="tag">View</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager/" rel="tag">ViewPager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager%EF%BC%8CJob/" rel="tag">ViewPager，Job</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo/" rel="tag">apollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/call-log/" rel="tag">call-log</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conflict/" rel="tag">conflict</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/customize/" rel="tag">customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/factory/" rel="tag">factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fast-forword/" rel="tag">fast-forword</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/" rel="tag">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphql/" rel="tag">graphql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/" rel="tag">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iflytek/" rel="tag">iflytek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/" rel="tag">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mySql/" rel="tag">mySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/newcoder/" rel="tag">newcoder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/observer/" rel="tag">observer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/" rel="tag">pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroll/" rel="tag">scroll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrollview/" rel="tag">scrollview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solid/" rel="tag">solid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentao/" rel="tag">zentao</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%AE%A2/" rel="tag">极客</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AC/" style="font-size: 13.33px;">AC</a> <a href="/tags/Activity/" style="font-size: 16.67px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/CVM/" style="font-size: 10px;">CVM</a> <a href="/tags/Cache/" style="font-size: 10px;">Cache</a> <a href="/tags/Campus/" style="font-size: 10px;">Campus</a> <a href="/tags/Carousel/" style="font-size: 10px;">Carousel</a> <a href="/tags/Click/" style="font-size: 10px;">Click</a> <a href="/tags/Contacts/" style="font-size: 10px;">Contacts</a> <a href="/tags/Customize/" style="font-size: 10px;">Customize</a> <a href="/tags/Decor/" style="font-size: 10px;">Decor</a> <a href="/tags/Download/" style="font-size: 10px;">Download</a> <a href="/tags/Encapsulation/" style="font-size: 10px;">Encapsulation</a> <a href="/tags/Essay/" style="font-size: 10px;">Essay</a> <a href="/tags/GTD/" style="font-size: 10px;">GTD</a> <a href="/tags/Gesture/" style="font-size: 10px;">Gesture</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Glide/" style="font-size: 10px;">Glide</a> <a href="/tags/GrqphQL/" style="font-size: 13.33px;">GrqphQL</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Handler/" style="font-size: 13.33px;">Handler</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/InputFilter/" style="font-size: 10px;">InputFilter</a> <a href="/tags/Intent/" style="font-size: 10px;">Intent</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/LaunchMode/" style="font-size: 10px;">LaunchMode</a> <a href="/tags/Leak/" style="font-size: 10px;">Leak</a> <a href="/tags/LetterIndexView/" style="font-size: 10px;">LetterIndexView</a> <a href="/tags/ListView/" style="font-size: 13.33px;">ListView</a> <a href="/tags/Location/" style="font-size: 10px;">Location</a> <a href="/tags/Looper/" style="font-size: 10px;">Looper</a> <a href="/tags/MVP/" style="font-size: 10px;">MVP</a> <a href="/tags/Map/" style="font-size: 10px;">Map</a> <a href="/tags/Message/" style="font-size: 10px;">Message</a> <a href="/tags/Model/" style="font-size: 10px;">Model</a> <a href="/tags/Netease/" style="font-size: 10px;">Netease</a> <a href="/tags/OOP/" style="font-size: 10px;">OOP</a> <a href="/tags/Partial/" style="font-size: 10px;">Partial</a> <a href="/tags/Pattern/" style="font-size: 10px;">Pattern</a> <a href="/tags/PhoneWindow/" style="font-size: 10px;">PhoneWindow</a> <a href="/tags/Presenter/" style="font-size: 10px;">Presenter</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/REST/" style="font-size: 13.33px;">REST</a> <a href="/tags/RecyclerView/" style="font-size: 10px;">RecyclerView</a> <a href="/tags/Runnable/" style="font-size: 10px;">Runnable</a> <a href="/tags/SOCKET/" style="font-size: 10px;">SOCKET</a> <a href="/tags/Scouce/" style="font-size: 10px;">Scouce</a> <a href="/tags/Service/" style="font-size: 13.33px;">Service</a> <a href="/tags/Shortcut/" style="font-size: 10px;">Shortcut</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/Soft/" style="font-size: 10px;">Soft</a> <a href="/tags/Speech/" style="font-size: 10px;">Speech</a> <a href="/tags/Splash/" style="font-size: 10px;">Splash</a> <a href="/tags/State/" style="font-size: 10px;">State</a> <a href="/tags/Stragety/" style="font-size: 10px;">Stragety</a> <a href="/tags/Summary/" style="font-size: 10px;">Summary</a> <a href="/tags/Sync/" style="font-size: 10px;">Sync</a> <a href="/tags/Thread/" style="font-size: 16.67px;">Thread</a> <a href="/tags/Toast/" style="font-size: 10px;">Toast</a> <a href="/tags/ToggleButton/" style="font-size: 10px;">ToggleButton</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Ubuntu/" style="font-size: 13.33px;">Ubuntu</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/ViewPager/" style="font-size: 10px;">ViewPager</a> <a href="/tags/ViewPager%EF%BC%8CJob/" style="font-size: 10px;">ViewPager，Job</a> <a href="/tags/apollo/" style="font-size: 10px;">apollo</a> <a href="/tags/call-log/" style="font-size: 10px;">call-log</a> <a href="/tags/conflict/" style="font-size: 10px;">conflict</a> <a href="/tags/customize/" style="font-size: 10px;">customize</a> <a href="/tags/factory/" style="font-size: 10px;">factory</a> <a href="/tags/fast-forword/" style="font-size: 10px;">fast-forword</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graphql/" style="font-size: 10px;">graphql</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/iflytek/" style="font-size: 10px;">iflytek</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mySql/" style="font-size: 10px;">mySql</a> <a href="/tags/newcoder/" style="font-size: 10px;">newcoder</a> <a href="/tags/observer/" style="font-size: 10px;">observer</a> <a href="/tags/pattern/" style="font-size: 13.33px;">pattern</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/scroll/" style="font-size: 10px;">scroll</a> <a href="/tags/scrollview/" style="font-size: 10px;">scrollview</a> <a href="/tags/solid/" style="font-size: 10px;">solid</a> <a href="/tags/zentao/" style="font-size: 10px;">zentao</a> <a href="/tags/%E6%9E%81%E5%AE%A2/" style="font-size: 10px;">极客</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/28/using-with-nested-fragment-in-graphql/">using-with-nested-fragment-in-graphql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/geek-towards-ultimate/">极客：构建和谐社会？</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/03/talk-about-dream/">谈谈梦想吧</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/19/practise-in-mvp/">我的 MVP 帝国发展史</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/10/input-filter-size-and-type/">让 Android 输入框只能输入固定长度的中英文</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AlphaGao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

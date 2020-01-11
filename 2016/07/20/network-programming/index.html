@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>网络编程之整体认知 | Here&#39;s to Change</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="网络编程 注：本博客由 Stormzhang 邪教群内讲课整理而来。  主要指Http和socket  Http 协议跟 Socket 有什么区别？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络编程之整体认知">
+<meta property="og:url" content="alphagao.com/2016/07/20/network-programming/index.html">
+<meta property="og:site_name" content="Here&#39;s to Change">
+<meta property="og:description" content="网络编程 注：本博客由 Stormzhang 邪教群内讲课整理而来。  主要指Http和socket  Http 协议跟 Socket 有什么区别？">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-07-20T14:26:34.000Z">
+<meta property="article:modified_time" content="2020-01-11T07:12:36.802Z">
+<meta property="article:author" content="AlphaGao">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="HTTP">
+<meta property="article:tag" content="SOCKET">
+<meta property="article:tag" content="Cache">
+<meta property="article:tag" content="REST">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Here&#39;s to Change" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Here&#39;s to Change</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">请问你真的有在努力吗 ？</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="alphagao.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-network-programming" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/20/network-programming/" class="article-date">
+  <time datetime="2016-07-20T14:26:34.000Z" itemprop="datePublished">2016-07-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      网络编程之整体认知
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h3><blockquote>
+<p>注：本博客由 Stormzhang 邪教群内讲课整理而来。</p>
+</blockquote>
+<p>主要指Http和socket</p>
+<blockquote>
+<p>Http 协议跟 Socket 有什么区别？</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="HTTP-特性"><a href="#HTTP-特性" class="headerlink" title="HTTP 特性"></a>HTTP 特性</h3><ol>
+<li>Http 是无状态的协议，每次发出请求第一步都是客户端与服务端建立连接，连接成功之后把数据传过去，服务器收到数据进行响应，然后再回传结果给客户端。这一次请求结束之后连接就断开了，下次再发新的请求就会再重新建立连接。</li>
+<li>假设有 1W 个用户，用 Http 则同时连接服务器用户可能只有1K个。因为其他用户请求完就断开连接了。Http 每次都要重新建立连接，导致效率上没有 Socket 高效</li>
+<li>Http 也可以实现长连接</li>
+<li>Http 包含请求（request：url、method、参数、header）和响应（response）两大块</li>
+<li>Http 请求方法包含get、post、delete、put、head、patch、trace、options，常见的为get和post，后6种为post衍生出来的，需要关注了解 put 和 delete 方法，这四种方法对应 REST 原则，也就是 RESTful 架构，类似于数据库增删改查</li>
+<li>get 请求参数可以为 url 问号后的字符拼接（<a href="http://www.baidu.com/?key1=value&amp;key2=value2）" target="_blank" rel="noopener">http://www.baidu.com/?key1=value&amp;key2=value2）</a></li>
+<li>post请求参数为键值对形式，不会直接显示，在 form 或者 body params 里传递</li>
+</ol>
+<h3 id="SOCKET-特性"><a href="#SOCKET-特性" class="headerlink" title="SOCKET 特性"></a>SOCKET 特性</h3><ol>
+<li>socket协议意思就是长连接，言外之意就是发数据之后，连接不会断开，会一直保持连接。</li>
+<li>如果用socket可能同时会有1w个人连接服务器，这个就比较浪费服务器资源，消耗带宽。但是socket的优势也很明显，因为一直保持连接，每次用户发送数据都很快，不用重新建立连接的过程。</li>
+</ol>
+<h4 id="http与socket都是基于tcp-ip协议"><a href="#http与socket都是基于tcp-ip协议" class="headerlink" title="http与socket都是基于tcp/ip协议"></a>http与socket都是基于tcp/ip协议</h4><h4 id="Http-使用场景"><a href="#Http-使用场景" class="headerlink" title="Http 使用场景"></a>Http 使用场景</h4><ol>
+<li>留言、页面加载</li>
+</ol>
+<h4 id="Socket-应用场景"><a href="#Socket-应用场景" class="headerlink" title="Socket 应用场景"></a>Socket 应用场景</h4><ol>
+<li>IM（即时通讯）</li>
+<li>长连接</li>
+</ol>
+<h3 id="REST架构"><a href="#REST架构" class="headerlink" title="REST架构"></a>REST架构</h3><p>Http请求的 get 、post、delete、put这四种方法对应 REST 原则，也就是 RESTful 架构，类似于数据库增删改查</p>
+<p>假设我们有如下需求：查询学生数量，创建新学生，修改学生信息，删除学生</p>
+<p>原始接口实现（仅使用了 ge t和 post 方法）：</p>
+<pre><code>get  /api/student/index  查询接口
+post  /api/student/   携带一些 params 是创建接口
+post  /api/student/update  携带一些参数   修改接口
+post  /api/student/delete 携带参数  删除接口</code></pre><p>基于REST实现：</p>
+<pre><code>get  /api/student/index  查询接口   不变
+post  /api/student/   携带一些 params 是创建接口  不变
+put  /api/student/ 携带一些参数   修改接口
+delete  /api/student/携带参数  删除接口</code></pre><p><strong>二者区别：</strong></p>
+<p>修改跟删除直接用 http 的 method 来指定，url 哪怕一样，就可以轻松知道你的动作，这就是所谓的 restful 概念最重要的一个理念</p>
+<h3 id="header的概念"><a href="#header的概念" class="headerlink" title="header的概念"></a>header的概念</h3><p>header的作用有很多，比如客户端告诉服务端，我发起的请求是什么语言，我发起的请求带的参数是什么格式的，是json还是哈希，我发起的请求需不需要带缓存，我发起的请求需要压缩等，这些信息都是通过header 传递的。</p>
+<p>服务端在返回结果的时候也有一些信息告诉客户端的，同样在 header 里传递，比如我返回的数据是什么格式的，我这次请求是不支持缓存的，我这次返回的数据没有压缩等。</p>
+<p>header 里的信息都是一个个的哈希，即 key value 对。比如大家常见的一些 header 里的信息：</p>
+<ol>
+<li>Content-Type: application/json</li>
+<li>Cache-Control : true 等</li>
+</ol>
+<p>header里默认的有很多字段，这是规定，当然你也可以自定义一些字段在里面传递，只要跟你们服务端约定好就行</p>
+<h4 id="这里有个字段叫做-Connection-keep-alive"><a href="#这里有个字段叫做-Connection-keep-alive" class="headerlink" title="这里有个字段叫做  Connection: keep-alive"></a>这里有个字段叫做  Connection: keep-alive</h4><p>http如果每次都请求断开未免太没效率了，后来有人就发现  一般我在发起一个请求之后，可能紧接着就发起第二个请求了，于是就有了这个字段这个字段顾名思义，就是声明连接的类型</p>
+<p>这个字段有两个值：close 和 keep-live<br>如果你指定 close，那么每次请求就会立马断开连接<br>如果你指明了 keep-live，就可以在一段时间内保持长连接，这个时间服务端可以自行配置，但是时间也不会太长，不然服务器会很吃紧，比如设置个30s，意味着这30s的时间内不会重新断开重连<br>默认值是keep-alive</p>
+<h3 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h3><p>response 意为服务端返回的值， response也会有header，以及返回值<br>比如你请求百度，返回的就是一段 html 代码，只不过浏览器渲染成了一个页面而已，网页源代码才是真正的返回结果<br>对于app中，目前大部分的response都是json格式的数据<br>Android中有各种各样的json数据解析器，如gson、jackson、FastJson等等</p>
+<h4 id="状态码（http-status）"><a href="#状态码（http-status）" class="headerlink" title="状态码（http status）"></a>状态码（http status）</h4><p>一般是 200—500<br>比如正常的时候返回的 status 就是200，代表成功<br>大家常见的status code有 404 找不到<br>500 服务器挂了<br>一般是200开头的大多是成功<br>30x代表重定向，其中304是服务端告诉你内容没有改变，意为缓存的内容</p>
+<h3 id="http缓存"><a href="#http缓存" class="headerlink" title="http缓存"></a>http缓存</h3><p>缓存是开发中最常见的一环，可以算是性能优化的一个大点了。</p>
+<p>缓存有两部分，客户端和服务端。</p>
+<p>做客户端的会以为缓存只有客户端才有，其实服务端更有，因为假设你每查一个数据，服务端都要到数据库重新查询一遍，那服务器压力得有多大，所以服务器会有一个缓存机制。</p>
+<p>缓存有两种机制，第一种最常见的就是时间缓存，比如我查询中国的城市信息，对于这部分假设我就设置7天的缓存时间，意味着客户端每次请求，服务端一次查询数据库，7天之内都不会再查询数据库，直接返回给你上一次的结果，对应的 status code 就是304，这对服务器性能优化是很大的一环。</p>
+<p>缓存有没有生效一般用 header里的 cache-control 字段控制。<br>如果客户端传递 cache-control 字段为 true 那么服务端有缓存的话就会启动缓存，<br>如果传递 false 那么会强制服务端每次都去数据库里查询，<br>缓存的时间有一个字段叫做  expired 字段，告诉你缓存过期的时间。</p>
+<p>所以一般来说，如果性能优化的话会有这么一个点，客户端发起一个请求，服务端返回数据，并且告诉客户端我这个请求有缓存的，缓存时间是7天，那么客户端就可以把这个请求结果缓存在本地，然后7天之内都不再发起请求，直接读取本地的缓存数据，那么会极大的节省服务器资源。<br>以时间为缓存的大多为那些请求数据不常变化的。</p>
+<p>但大多数场景是数据经常变化，比如我刷个微博，微博变化很快，可能1小时不会变化，但也可能1分钟就有更新，这种缓存就没法用固定的时间来进行衡量了，所以第二种缓存叫做 <strong>Etag缓存</strong>。</p>
+<p>Etag 你们可以理解成就是一个唯一的字符串。<br>这个字符串是服务端根据时间、用户标识、内容索引等生成的一个字符串。<br>一旦用户的内容变化，这个Etag就会变化，如果用户内容不变化，那么Etag也不会变化</p>
+<p>所以刷微博的话机制就是这样的，客户端发起一个请求，服务端返回了一个数据，告诉客户端，我是有缓存的，缓存的 Etag 值也返回给你了，然后我把返回的数据以及 Etag 缓存到本地<br>这样下次请求的话如果数据没有变化，那么服务端不会返回给你数据了，而只会返回一个 Etag值，拿到这个Etag值之后到本地去找这个Etag缓存对应的数据，直接渲染。</p>
+<p><strong>注意：</strong> Etag的比较和对应的数据包都是在服务端完成的。</p>
+<p>Etag的缓存其实才是目前使用最多的缓存策略<br>主流网络库都会默认支持这两种缓存，也就说volley或者okhttp都会支持的</p>
+<p>以volley为例，他内部实现了缓存机制，每次请求之后如果服务端支持缓存的话，他自己只直接在本地进行缓存的。<br>也就是说  如果服务端返回了 304 ，并返回了Etag，volley会自动去本地寻找上次缓存过的数据进行渲染。</p>
+<blockquote>
+<p>客户端一般使用文件缓存，如volley</p>
+</blockquote>
+<p>volley的缓存机制是这样的，下次发起请求，服务端返回 304 ，那么volley就默认直接到本地缓存去找，问题是，如果用户没有网，那么发起请求，服务端根本没有响应，这时候volley默认的是不知道去本地去找的，因为他没有接受到304的信号，所以说如果想要没网的时候去本地读取缓存，这样用户体验会更好点，这个时候需要自己去做处理的。</p>
+<p>第一次请求肯定没有 Etag 的，第一次也没有缓存，服务端会直接返回给你数据以及Etag。</p>
+<p>第二次之后会把Etag请求给服务端，但是把Etag提交给服务端网络库会自动携带的，一般不需要关心。</p>
+<p>如果分页做缓存的话最好用数据库了，一般只做了单页缓存，没网的时候起码让用户看到内容，也就是说用户一进来最好能让他看到一些数据做占位符。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="alphagao.com/2016/07/20/network-programming/" data-id="ck5997sjt005iozp0dt3fgcdc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cache/" rel="tag">Cache</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SOCKET/" rel="tag">SOCKET</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/21/customize-ToggleButton/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android自定义view之ToggleButton
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/15/read-write-contacts-calllog/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ContentProvider之读写联系人、短信、通话记录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/GraphQl/">GraphQl</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Maven/">Maven</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pattern/">Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Water/">Water</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AC/" rel="tag">AC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Activity/" rel="tag">Activity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Apache/" rel="tag">Apache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CVM/" rel="tag">CVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cache/" rel="tag">Cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Campus/" rel="tag">Campus</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Carousel/" rel="tag">Carousel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Click/" rel="tag">Click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Contacts/" rel="tag">Contacts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Customize/" rel="tag">Customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Decor/" rel="tag">Decor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Download/" rel="tag">Download</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Encapsulation/" rel="tag">Encapsulation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Essay/" rel="tag">Essay</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GTD/" rel="tag">GTD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gesture/" rel="tag">Gesture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Glide/" rel="tag">Glide</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GrqphQL/" rel="tag">GrqphQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Handler/" rel="tag">Handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IDEA/" rel="tag">IDEA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InputFilter/" rel="tag">InputFilter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Intent/" rel="tag">Intent</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LaunchMode/" rel="tag">LaunchMode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leak/" rel="tag">Leak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LetterIndexView/" rel="tag">LetterIndexView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ListView/" rel="tag">ListView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Location/" rel="tag">Location</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Looper/" rel="tag">Looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/" rel="tag">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Map/" rel="tag">Map</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Message/" rel="tag">Message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Model/" rel="tag">Model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netease/" rel="tag">Netease</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OOP/" rel="tag">OOP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Partial/" rel="tag">Partial</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pattern/" rel="tag">Pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PhoneWindow/" rel="tag">PhoneWindow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Presenter/" rel="tag">Presenter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Provider/" rel="tag">Provider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/" rel="tag">REST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/" rel="tag">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Runnable/" rel="tag">Runnable</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SOCKET/" rel="tag">SOCKET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scouce/" rel="tag">Scouce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service/" rel="tag">Service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shortcut/" rel="tag">Shortcut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/" rel="tag">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Soft/" rel="tag">Soft</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Speech/" rel="tag">Speech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Splash/" rel="tag">Splash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State/" rel="tag">State</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stragety/" rel="tag">Stragety</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Summary/" rel="tag">Summary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sync/" rel="tag">Sync</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/" rel="tag">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Toast/" rel="tag">Toast</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ToggleButton/" rel="tag">ToggleButton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/" rel="tag">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/View/" rel="tag">View</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager/" rel="tag">ViewPager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ViewPager%EF%BC%8CJob/" rel="tag">ViewPager，Job</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apollo/" rel="tag">apollo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/call-log/" rel="tag">call-log</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conflict/" rel="tag">conflict</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/customize/" rel="tag">customize</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/factory/" rel="tag">factory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fast-forword/" rel="tag">fast-forword</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/" rel="tag">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphql/" rel="tag">graphql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/" rel="tag">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iflytek/" rel="tag">iflytek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interface/" rel="tag">interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interview/" rel="tag">interview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/" rel="tag">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/" rel="tag">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mySql/" rel="tag">mySql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/newcoder/" rel="tag">newcoder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/observer/" rel="tag">observer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/" rel="tag">pattern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroll/" rel="tag">scroll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrollview/" rel="tag">scrollview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solid/" rel="tag">solid</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zentao/" rel="tag">zentao</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9E%81%E5%AE%A2/" rel="tag">极客</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AC/" style="font-size: 13.33px;">AC</a> <a href="/tags/Activity/" style="font-size: 16.67px;">Activity</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Apache/" style="font-size: 10px;">Apache</a> <a href="/tags/CVM/" style="font-size: 10px;">CVM</a> <a href="/tags/Cache/" style="font-size: 10px;">Cache</a> <a href="/tags/Campus/" style="font-size: 10px;">Campus</a> <a href="/tags/Carousel/" style="font-size: 10px;">Carousel</a> <a href="/tags/Click/" style="font-size: 10px;">Click</a> <a href="/tags/Contacts/" style="font-size: 10px;">Contacts</a> <a href="/tags/Customize/" style="font-size: 10px;">Customize</a> <a href="/tags/Decor/" style="font-size: 10px;">Decor</a> <a href="/tags/Download/" style="font-size: 10px;">Download</a> <a href="/tags/Encapsulation/" style="font-size: 10px;">Encapsulation</a> <a href="/tags/Essay/" style="font-size: 10px;">Essay</a> <a href="/tags/GTD/" style="font-size: 10px;">GTD</a> <a href="/tags/Gesture/" style="font-size: 10px;">Gesture</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Glide/" style="font-size: 10px;">Glide</a> <a href="/tags/GrqphQL/" style="font-size: 13.33px;">GrqphQL</a> <a href="/tags/HTTP/" style="font-size: 10px;">HTTP</a> <a href="/tags/Handler/" style="font-size: 13.33px;">Handler</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/InputFilter/" style="font-size: 10px;">InputFilter</a> <a href="/tags/Intent/" style="font-size: 10px;">Intent</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/LaunchMode/" style="font-size: 10px;">LaunchMode</a> <a href="/tags/Leak/" style="font-size: 10px;">Leak</a> <a href="/tags/LetterIndexView/" style="font-size: 10px;">LetterIndexView</a> <a href="/tags/ListView/" style="font-size: 13.33px;">ListView</a> <a href="/tags/Location/" style="font-size: 10px;">Location</a> <a href="/tags/Looper/" style="font-size: 10px;">Looper</a> <a href="/tags/MVP/" style="font-size: 10px;">MVP</a> <a href="/tags/Map/" style="font-size: 10px;">Map</a> <a href="/tags/Message/" style="font-size: 10px;">Message</a> <a href="/tags/Model/" style="font-size: 10px;">Model</a> <a href="/tags/Netease/" style="font-size: 10px;">Netease</a> <a href="/tags/OOP/" style="font-size: 10px;">OOP</a> <a href="/tags/Partial/" style="font-size: 10px;">Partial</a> <a href="/tags/Pattern/" style="font-size: 10px;">Pattern</a> <a href="/tags/PhoneWindow/" style="font-size: 10px;">PhoneWindow</a> <a href="/tags/Presenter/" style="font-size: 10px;">Presenter</a> <a href="/tags/Provider/" style="font-size: 10px;">Provider</a> <a href="/tags/REST/" style="font-size: 13.33px;">REST</a> <a href="/tags/RecyclerView/" style="font-size: 10px;">RecyclerView</a> <a href="/tags/Runnable/" style="font-size: 10px;">Runnable</a> <a href="/tags/SOCKET/" style="font-size: 10px;">SOCKET</a> <a href="/tags/Scouce/" style="font-size: 10px;">Scouce</a> <a href="/tags/Service/" style="font-size: 13.33px;">Service</a> <a href="/tags/Shortcut/" style="font-size: 10px;">Shortcut</a> <a href="/tags/Socket/" style="font-size: 10px;">Socket</a> <a href="/tags/Soft/" style="font-size: 10px;">Soft</a> <a href="/tags/Speech/" style="font-size: 10px;">Speech</a> <a href="/tags/Splash/" style="font-size: 10px;">Splash</a> <a href="/tags/State/" style="font-size: 10px;">State</a> <a href="/tags/Stragety/" style="font-size: 10px;">Stragety</a> <a href="/tags/Summary/" style="font-size: 10px;">Summary</a> <a href="/tags/Sync/" style="font-size: 10px;">Sync</a> <a href="/tags/Thread/" style="font-size: 16.67px;">Thread</a> <a href="/tags/Toast/" style="font-size: 10px;">Toast</a> <a href="/tags/ToggleButton/" style="font-size: 10px;">ToggleButton</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Ubuntu/" style="font-size: 13.33px;">Ubuntu</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/ViewPager/" style="font-size: 10px;">ViewPager</a> <a href="/tags/ViewPager%EF%BC%8CJob/" style="font-size: 10px;">ViewPager，Job</a> <a href="/tags/apollo/" style="font-size: 10px;">apollo</a> <a href="/tags/call-log/" style="font-size: 10px;">call-log</a> <a href="/tags/conflict/" style="font-size: 10px;">conflict</a> <a href="/tags/customize/" style="font-size: 10px;">customize</a> <a href="/tags/factory/" style="font-size: 10px;">factory</a> <a href="/tags/fast-forword/" style="font-size: 10px;">fast-forword</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graphql/" style="font-size: 10px;">graphql</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/iflytek/" style="font-size: 10px;">iflytek</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/interview/" style="font-size: 10px;">interview</a> <a href="/tags/jenkins/" style="font-size: 10px;">jenkins</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/mySql/" style="font-size: 10px;">mySql</a> <a href="/tags/newcoder/" style="font-size: 10px;">newcoder</a> <a href="/tags/observer/" style="font-size: 10px;">observer</a> <a href="/tags/pattern/" style="font-size: 13.33px;">pattern</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/scroll/" style="font-size: 10px;">scroll</a> <a href="/tags/scrollview/" style="font-size: 10px;">scrollview</a> <a href="/tags/solid/" style="font-size: 10px;">solid</a> <a href="/tags/zentao/" style="font-size: 10px;">zentao</a> <a href="/tags/%E6%9E%81%E5%AE%A2/" style="font-size: 10px;">极客</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/28/using-with-nested-fragment-in-graphql/">using-with-nested-fragment-in-graphql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/16/geek-towards-ultimate/">极客：构建和谐社会？</a>
+          </li>
+        
+          <li>
+            <a href="/2019/03/03/talk-about-dream/">谈谈梦想吧</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/19/practise-in-mvp/">我的 MVP 帝国发展史</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/10/input-filter-size-and-type/">让 Android 输入框只能输入固定长度的中英文</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 AlphaGao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
