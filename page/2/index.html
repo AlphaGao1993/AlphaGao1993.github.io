@@ -13,38 +13,12 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
-
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    hostname: new URL('alphagao.com').hostname,
-    root: '/',
-    scheme: 'Muse',
-    version: '7.7.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
-    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"alphagao.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
   <meta name="description" content="Fake it until you make it.">
 <meta property="og:type" content="website">
@@ -63,8 +37,9 @@
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
   };
 </script>
 
@@ -107,19 +82,6 @@
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Here's to Change</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-        <h1 class="site-subtitle" itemprop="description">请问你真的有在努力吗 ？</h1>
-      
-  </div>
-
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
       <span class="toggle-line toggle-line-first"></span>
@@ -127,40 +89,59 @@
       <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Here's to Change</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">请问你真的有在努力吗 ？</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
 </div>
 
 
+
+
 <nav class="site-nav">
-  
-  <ul id="menu" class="menu">
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
 
   </li>
   </ul>
-
 </nav>
+
+
+
+
 </div>
     </header>
 
@@ -179,14 +160,12 @@
         <div class="content-wrap">
           
 
-          <div class="content">
+          <div class="content index posts-expand">
             
-
-  <div class="posts-expand">
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2018/03/14/summary-2017/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -207,7 +186,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -215,20 +194,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Water/" itemprop="url" rel="index">
-                    <span itemprop="name">Water</span>
-                  </a>
+                  <a href="/categories/Water/" itemprop="url" rel="index"><span itemprop="name">Water</span></a>
                 </span>
             </span>
 
@@ -237,11 +214,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2018/03/14/summary-2017/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2018/03/14/summary-2017/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2018/03/14/summary-2017/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -280,10 +257,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2018/01/14/graphql-and-apollo-android/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -304,7 +281,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -312,20 +289,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GraphQl/" itemprop="url" rel="index">
-                    <span itemprop="name">GraphQl</span>
-                  </a>
+                  <a href="/categories/GraphQl/" itemprop="url" rel="index"><span itemprop="name">GraphQl</span></a>
                 </span>
             </span>
 
@@ -334,11 +309,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2018/01/14/graphql-and-apollo-android/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2018/01/14/graphql-and-apollo-android/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2018/01/14/graphql-and-apollo-android/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -377,10 +352,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2017/10/22/meeting-with-graphql/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -401,7 +376,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -409,20 +384,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -431,11 +404,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2017/10/22/meeting-with-graphql/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/10/22/meeting-with-graphql/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/10/22/meeting-with-graphql/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -475,10 +448,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2017/09/02/some-gain-in-two-weeks-in-beginning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -499,7 +472,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -507,20 +480,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Water/" itemprop="url" rel="index">
-                    <span itemprop="name">Water</span>
-                  </a>
+                  <a href="/categories/Water/" itemprop="url" rel="index"><span itemprop="name">Water</span></a>
                 </span>
             </span>
 
@@ -529,11 +500,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2017/09/02/some-gain-in-two-weeks-in-beginning/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/09/02/some-gain-in-two-weeks-in-beginning/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/09/02/some-gain-in-two-weeks-in-beginning/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -572,10 +543,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2017/08/13/analysis-of-splash-in-flow-and-functions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -596,7 +567,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -604,20 +575,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -626,11 +595,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2017/08/13/analysis-of-splash-in-flow-and-functions/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/08/13/analysis-of-splash-in-flow-and-functions/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/08/13/analysis-of-splash-in-flow-and-functions/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -669,10 +638,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2017/08/07/stragety-pattern-vs-state-pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -693,7 +662,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -701,20 +670,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Pattern/" itemprop="url" rel="index">
-                    <span itemprop="name">Pattern</span>
-                  </a>
+                  <a href="/categories/Pattern/" itemprop="url" rel="index"><span itemprop="name">Pattern</span></a>
                 </span>
             </span>
 
@@ -723,11 +690,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2017/08/07/stragety-pattern-vs-state-pattern/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/08/07/stragety-pattern-vs-state-pattern/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/08/07/stragety-pattern-vs-state-pattern/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -767,10 +734,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2017/07/30/what-is-fast-forward/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -791,7 +758,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -799,20 +766,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
-                  </a>
+                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
                 </span>
             </span>
 
@@ -821,11 +786,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2017/07/30/what-is-fast-forward/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/07/30/what-is-fast-forward/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/07/30/what-is-fast-forward/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -865,10 +830,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2017/07/28/best-way-to-start-activiity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -889,7 +854,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -897,20 +862,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -919,11 +882,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2017/07/28/best-way-to-start-activiity/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/07/28/best-way-to-start-activiity/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/07/28/best-way-to-start-activiity/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -962,10 +925,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2017/07/25/build-a-city-selector-page/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -986,7 +949,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -994,20 +957,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -1016,11 +977,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2017/07/25/build-a-city-selector-page/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/07/25/build-a-city-selector-page/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/07/25/build-a-city-selector-page/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -1066,10 +1027,10 @@
   
   
 
-        
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="alphagao.com/2017/05/22/carousel-pager-practice-and-encapsulation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1090,7 +1051,7 @@
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
@@ -1098,20 +1059,18 @@
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2020-01-11 15:12:36" itemprop="dateModified" datetime="2020-01-11T15:12:36+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -1120,11 +1079,11 @@
   <span class="post-meta-item">
     
       <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
+        <i class="far fa-comment"></i>
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2017/05/22/carousel-pager-practice-and-encapsulation/#comments" itemprop="discussionUrl">
+    <a title="valine" href="/2017/05/22/carousel-pager-practice-and-encapsulation/#valine-comments" itemprop="discussionUrl">
       <span class="post-comments-count valine-comment-count" data-xid="/2017/05/22/carousel-pager-practice-and-encapsulation/" itemprop="commentCount"></span>
     </a>
   </span>
@@ -1163,7 +1122,6 @@
   
   
 
-  </div>
 
   
   <nav class="pagination">
@@ -1177,7 +1135,7 @@
 
 <script>
   window.addEventListener('tabs:register', () => {
-    let activeClass = CONFIG.comments.activeClass;
+    let { activeClass } = CONFIG.comments;
     if (CONFIG.comments.storage) {
       activeClass = localStorage.getItem('comments_active') || activeClass;
     }
@@ -1253,13 +1211,13 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/AlphaGao1993" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;AlphaGao1993" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="https://github.com/AlphaGao1993" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;AlphaGao1993" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:yanqiang_gao@163.com" title="E-Mail → mailto:yanqiang_gao@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:yanqiang_gao@163.com" title="E-Mail → mailto:yanqiang_gao@163.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
       </span>
       <span class="links-of-author-item">
-        <a href="http://stackoverflow.com/users/6415747/alpha" title="StackOverflow → http:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;6415747&#x2F;alpha" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+        <a href="http://stackoverflow.com/users/6415747/alpha" title="StackOverflow → http:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;6415747&#x2F;alpha" rel="noopener" target="_blank"><i class="stack-overflow fa-fw"></i>StackOverflow</a>
       </span>
   </div>
 
@@ -1279,19 +1237,18 @@
       <div class="footer-inner">
         
 
+        
+
 <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">AlphaGao</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
-  </div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
 
         
@@ -1351,20 +1308,20 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
       return GUEST.includes(item);
     });
     new Valine({
-      el: '#valine-comments',
-      verify: false,
-      notify: true,
-      appId: 'H96xxLo0hzG4azqx9XRPBLGe-gzGzoHsz',
-      appKey: 'NPnxUKfUoUn6iIlWOyvA1WgE',
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'H96xxLo0hzG4azqx9XRPBLGe-gzGzoHsz',
+      appKey     : 'NPnxUKfUoUn6iIlWOyvA1WgE',
       placeholder: "Just go go",
-      avatar: 'mm',
-      meta: guest,
-      pageSize: '10' || 10,
-      visitor: false,
-      lang: '' || 'zh-cn',
-      path: location.pathname,
-      recordIP: false,
-      serverURLs: ''
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
     });
   }, window.Valine);
 });
