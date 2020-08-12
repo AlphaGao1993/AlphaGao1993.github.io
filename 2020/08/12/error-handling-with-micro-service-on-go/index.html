@@ -54,7 +54,7 @@
 <meta property="og:description" content="前言刚开始接触 Go 的时候，被 Go 这种可以直接返回多个变量的设计惊呆了，而且错误也是作为变量与函数结果一并返回。在此之前接触的都是 Java 或者 Kotlin 这种只有一个返回值的语言，而这两种语言本身的错误处理机制都是在函数签名上抛出一个异常，由方法调用方决定是否要处理该异常。Java 中所有的异常都继承自 java.lang.Throwable 接口，然后又分为 Error 和 Exc">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-08-12T04:14:53.000Z">
-<meta property="article:modified_time" content="2020-08-12T12:26:21.264Z">
+<meta property="article:modified_time" content="2020-08-12T12:29:17.248Z">
 <meta property="article:author" content="AlphaGao">
 <meta property="article:tag" content="error">
 <meta property="article:tag" content="GraphQL">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-08-12 12:14:53 / Modified: 20:26:21" itemprop="dateCreated datePublished" datetime="2020-08-12T12:14:53+08:00">2020-08-12</time>
+              <time title="Created: 2020-08-12 12:14:53 / Modified: 20:29:17" itemprop="dateCreated datePublished" datetime="2020-08-12T12:14:53+08:00">2020-08-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -347,11 +347,11 @@
 <p>不过除了生产环境，别的环境的应用都是我们开发自己在使用，所以有时候暴露一些调试信息能够加快定位问题的速度，所以我建议客户端在非生产环境也可以把报错信息完整打印出来到用户界面，通常都可以通过 logLevel 或环境变量来实现，不再赘述。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在微服务开发大行其道的当下，一个错误从产生到被消费，会经过很多系统（服务），如果没有合理得对错误进行处理，会大大得增加各个系统之间沟通、调试的成本。很多像我一样刚进入服务端开发领域的小白，都会一股脑地将 error 直接返回，将业务错误、运行时错误、程序错误当成同样的 error 来处理，主要还是没有经历过在代码的海洋中艰难 debug 的窘态。一个设计良好的错误处理机制，不仅能够清晰展现系统内部错误发生的链路，加快 debug 速度，同时还能促进系统设计的合理性和可用性。</p>
 <p>这篇文章虽然是基于 Go 语言，但实际上很多想法和思考都可以使用于其他大部分语言，也希望这些想法对你能有所启发。</p>
-<h2 id="注脚"><a href="#注脚" class="headerlink" title="注脚"></a>注脚</h2><p>[^1]: 截止本文发布时间(2020-08-14)，Go 版本 1.14.2，errors 包中已经新增加了 UnWrap、As、Is 等方法；</p>
+<h2 id="注脚"><a href="#注脚" class="headerlink" title="注脚"></a>注脚</h2><p>[^1]: 截止本文发布时间(2020-08-14)，Go 版本 1.14.2，errors 包中已经新增加了 <code>UnWrap</code>、<code>As</code>、<code>Is</code> 等方法；</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
 <ol>
 <li><a href="https://juejin.im/post/6844904111813427214" target="_blank" rel="noopener">微服务错误处理的一些思考</a></li>
-<li><a href="https://www.ituring.com.cn/article/508191" target="_blank" rel="noopener">如何优雅的在Golang中进行错误处理</a></li>
+<li><a href="https://www.ituring.com.cn/article/508191" target="_blank" rel="noopener">如何优雅的在 Golang 中进行错误处理</a></li>
 <li><a href="https://github.com/99designs/gqlgen/blob/master/docs/content/reference/errors.md" target="_blank" rel="noopener">99designs/gqlgen</a></li>
 <li><a href="https://github.com/pkg/errors" target="_blank" rel="noopener">pkg/errors</a></li>
 </ol>
