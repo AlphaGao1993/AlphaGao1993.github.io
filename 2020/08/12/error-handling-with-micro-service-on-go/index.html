@@ -54,7 +54,7 @@
 <meta property="og:description" content="前言刚开始接触 Go 的时候，被 Go 这种可以直接返回多个变量的设计惊呆了，而且错误也是作为变量与函数结果一并返回。在此之前接触的都是 Java 或者 Kotlin 这种只有一个返回值的语言，而这两种语言本身的错误处理机制都是在函数签名上抛出一个异常，由方法调用方决定是否要处理该异常。Java 中所有的异常都继承自 java.lang.Throwable 接口，然后又分为 Error 和 Exc">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-08-12T04:14:53.000Z">
-<meta property="article:modified_time" content="2020-08-12T12:31:41.974Z">
+<meta property="article:modified_time" content="2020-08-12T12:46:17.881Z">
 <meta property="article:author" content="AlphaGao">
 <meta property="article:tag" content="error">
 <meta property="article:tag" content="GraphQL">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-08-12 12:14:53 / Modified: 20:31:41" itemprop="dateCreated datePublished" datetime="2020-08-12T12:14:53+08:00">2020-08-12</time>
+              <time title="Created: 2020-08-12 12:14:53 / Modified: 20:46:17" itemprop="dateCreated datePublished" datetime="2020-08-12T12:14:53+08:00">2020-08-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -322,7 +322,7 @@
 <h3 id="5-网关服务的处理"><a href="#5-网关服务的处理" class="headerlink" title="5. 网关服务的处理"></a>5. 网关服务的处理</h3><p>我们的业务使用 GraphQL 作为业务网关，因此错误的返回需要能够匹配 GraphQL 的固定格式。GraphQL 的接口固定响应格式为：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>:&#123;&#125;,</span><br><span class="line">    <span class="attr">"errors"</span>:[</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"message"</span>:<span class="string">""</span>,</span><br><span class="line">            <span class="attr">"path"</span>:<span class="string">""</span>,</span><br><span class="line">            <span class="attr">"extensions"</span>:&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>errors 下面的 extensipns 是一个可自定义的 json 对象，通常的做法是把错误码放进 extensions 中，作为客户端判断错误码类型的依据。</p>
+<p>errors 下面的 extensions  是一个可自定义的 json 对象，通常的做法是把错误码放进 extensions 中，作为客户端判断错误码类型的依据。</p>
 <p>看个例子：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *AccountServer)</span> <span class="title">CreateGroup</span><span class="params">(ctx context.Context, in *account.CreateGroupRequest)</span> <span class="params">(*account.GetGroupResponse, error)</span></span> &#123;</span><br><span class="line">    cateGory := factory.ToCateGoryDO(in.CateGory)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(in.GetRoleName())==<span class="number">0</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>,errs.GenRPCErr(code.Code_INVALID_ROLE_NAME)</span><br><span class="line">    &#125;</span><br><span class="line">	groupDO, err := appSrv.CreateGroup(...)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> &amp;account.GetGroupResponse&#123;</span><br><span class="line">		Group: factory.ToGroupDTO(groupDO),</span><br><span class="line">	&#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
